@@ -25,36 +25,26 @@ public class Interceptor extends HandlerInterceptorAdapter{
 
 	protected static final Logger logger = LoggerFactory.getLogger(Interceptor.class);
 
-	private static final String ADM_SESSION_KEY = "admSession";
-	private static final String ADM_MENU_KEY = "admMenu";
+	private static final String ADM_SESSION_KEY = "userInfo";
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		this.convertRequestToMap(request);
 		String uri = request.getRequestURI();
-//		if(!uri.contains("/admin/login")) {
-//			if(request.getSession().getAttribute(ADM_SESSION_KEY) == null) {
-//				response.sendRedirect("/admin/login");
-//				return super.preHandle(request, response, handler);
-//			};
-//
-//			List<Map<String,String>> menuList = (List) request.getSession().getAttribute(ADM_MENU_KEY);
-//			for(Map menu : menuList) {
-//				if(uri.equals(menu.get("menuUrl"))) {
-//					request.getSession().setAttribute("nowMenuNm", menu.get("menuNm"));
-//				}
-//			}
-//		};
+
+		if(!uri.contains("/bbs/login")) {
+			if(request.getSession().getAttribute(ADM_SESSION_KEY) == null) {
+				response.sendRedirect("/bbs/login");
+			}
+		}
+
 
 		logger.debug("===================       START       ===================");
 		logger.debug(" Request URI \t:  " + uri);
 		String ipAddr = request.getRemoteAddr();
 		Map params = (Map) request.getAttribute("params");
 		logger.debug(" params \t:  " + params.toString());
-
-//		String authToken = (String) params.get("authToken");
-//		authService.chkAuthToken(authToken);
 
 		return super.preHandle(request, response, handler);
 	}
@@ -125,22 +115,9 @@ public class Interceptor extends HandlerInterceptorAdapter{
 				e.printStackTrace();
 			}
 		}
-		else {// JSON string으로 전달 하지 않은 경우
-			Enumeration enums = request.getParameterNames();
-			while(enums.hasMoreElements()){
-				String paramName = (String)enums.nextElement();
-				String[] parameters = request.getParameterValues(paramName);
-				// Parameter가 배열일 경우
-				if(parameters.length > 1){
-					paramMap.put(paramName, parameters);
-				// Parameter가 배열이 아닌 경우
-				}else{
-					paramMap.put(paramName, parameters[0]);
-				}
-			}
-		}
-//		Map sessionMap = (Map) request.getSession().getAttribute(SESSION_USER_INFO_KEY);
-//		paramMap.put(SESSION_USER_INFO_KEY, sessionMap);
+
+		Map sessionMap = (Map) request.getSession().getAttribute("userInfo");
+		paramMap.put("session", sessionMap);
 		request.setAttribute("params", paramMap);
 	}
 }

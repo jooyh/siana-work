@@ -12,28 +12,28 @@
 		<put-attribute name="footer" value="/WEB-INF/tiles/layout/footer.jsp" />
 	</definition>
 
-	<definition name="*.page" extends="baseLayout">
+	<definition name="*.part" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/{1}.jsp" />
 	</definition>
 
-	<definition name="*/*.page" extends="baseLayout">
+	<definition name="*/*.part" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp" />
 	</definition>
-	<definition name="*/*/*.page" extends="baseLayout">
+	<definition name="*/*/*.part" extends="baseLayout">
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
 	</definition>
 
-	<!-- 타일즈 부분 적용 -->
-	<definition name="partsLayout" template="/WEB-INF/tiles/layout/partsLayout.jsp">
+	<!-- 타일즈 부분 적용 (공통 헤더만 유지) -->
+	<definition name="pageLayout" template="/WEB-INF/tiles/layout/pageLayout.jsp">
 	</definition>
 
-	<definition name="*.part" extends="partsLayout">
+	<definition name="*.page" extends="pageLayout">
 		<put-attribute name="content" value="/WEB-INF/views/{1}.jsp" />
 	</definition>
-	<definition name="*/*.part" extends="partsLayout">
+	<definition name="*/*.page" extends="pageLayout">
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp" />
 	</definition>
-	<definition name="*/*/*.part" extends="partsLayout">
+	<definition name="*/*/*.page" extends="pageLayout">
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
 	</definition>
 </tiles-definitions>

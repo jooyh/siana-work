@@ -62,8 +62,8 @@ public class ServletConfiguration extends WebMvcConfigurerAdapter{
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
     	registry.addInterceptor(new Interceptor())
-    	.addPathPatterns("/**");
-//    	.excludePathPatterns("/admin/**");
+    	.addPathPatterns("/bbs/**");
+//    	.excludePathPatterns("/bbs/login*");
     }
 }
 

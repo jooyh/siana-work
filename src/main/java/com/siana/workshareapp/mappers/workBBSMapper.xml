@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WorkBBSService">
+
+	<select id="getWorkBBSDetail" parameterType="Map" resultType="Map">
+		SELECT /*[WorkBBSService.getWorkBBSList] 업무 게시판 상세 조회*/
+			   BBS_ID      AS bbsId
+			 , BBS_TITLE   AS bbsTitle
+			 , BBS_DESC    AS bbsDesc
+			 , BBS_STATUS  AS bbsStatus
+			 , BBS_TARGET  AS bbsTarget
+			 , ETC         AS etc
+			 , REQ_DTM     AS reqDtm
+			 , RES_DTM     AS resDtm
+			 , REG_ID      AS regId
+			 , REG_DTM     AS regDtm
+			 , UPD_ID      AS updId
+			 , UPD_DTM     AS updDtm
+		  FROM TMP_BBS
+		 WHERE USE_YN = 'Y'
+		   AND BBS_ID = ${bbsId}
+	</select>
+
+	<select id="getWorkBBSList" parameterType="Map" resultType="Map">
+		SELECT /*[WorkBBSService.getWorkBBSList] 업무 게시판 상세 조회*/
+			   BBS_ID      AS bbsId
+			 , BBS_TITLE   AS bbsTitle
+			 , BBS_DESC    AS bbsDesc
+			 , BBS_STATUS  AS bbsStatus
+			 , BBS_TARGET  AS bbsTarget
+			 , ETC         AS etc
+			 , REQ_DTM     AS reqDtm
+			 , RES_DTM     AS resDtm
+			 , REG_ID      AS regId
+			 , REG_DTM     AS regDtm
+			 , UPD_ID      AS updId
+			 , UPD_DTM     AS updDtm
+		  FROM TMP_BBS
+		 WHERE USE_YN = 'Y'
+	</select>
+
+</mapper>

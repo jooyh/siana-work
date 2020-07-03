@@ -5,18 +5,22 @@
 
 <html>
 <head>
-<title>MARKET ADMIN</title>
+<meta charset="utf-8">
+<title>Siana Work Share</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="cache-control" content="no-cache" />
-<link rel="shortcut icon" href="/resources/static/images/common/daelim.ico" />
+<meta http-equiv="pragma" content="no-cache" />
+<link rel="stylesheet" href="/resources/static/css/bootstrap.min.css" media="all">
 <link rel="stylesheet" href="/resources/static/css/common.css" media="all">
-<link rel="stylesheet" href="/resources/static/css/jquery-ui.css" media="all">
-<script type="text/javascript" src="/resources/static/js/jquery-1.10.2.js"></script>
-<script type="text/javascript" src="/resources/static/js/jquery-ui.js"></script>
+<script type="text/javascript" src="/resources/static/lib/jquery-1.10.2.js"></script>
 <script type="text/javascript" src="/resources/static/js/common.js"></script>
+
 </head>
-<body id="login">
+<body>
 	<tiles:insertAttribute name="content"/>
 </body>
 <script>

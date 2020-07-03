@@ -1,7 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="AccountService">
-	<select id="test" resultType="Map" parameterType="Map">
-		SELECT * FROM API_USER_INFO
+
+	<select id="login" resultType="Map" parameterType="Map">
+		SELECT /* [AccountService.login] 사용자 로그인 */
+		        USER_ID        AS userId
+				,USER_EMAIL     AS userEmail
+				,USER_PW        AS userPw
+				,USER_NAME      AS userName
+				,COMPANY_CODE   AS companyCode
+				,STATUS         AS status
+				,USE_YN         AS useYn
+           FROM TMP_USER
+          WHERE USE_YN = 'Y'
+            AND USER_ID = #{userId}
+            AND USER_PW = #{userPw}
 	</select>
+
+	<insert id="registUser" parameterType="Map">
+		INSERT /* [AccountService.registUser] 사용자 등록 */
+		INTO TMP_USER (
+				USER_ID
+				,USER_EMAIL
+				,USER_PW
+				,USER_NAME
+				,COMPANY_CODE
+				,REG_ID
+				,REG_DTM
+				,UPD_ID
+				,UPD_DTM
+		)VALUSE(
+				#{userId}}
+				,#{userEmail}
+				,#{userPw}
+				,#{userName}
+				,#{companyCode}
+				,#{session.userId}
+				,NOW()
+				,#{session.userId}
+				,NOW()
+		)
+	</insert>
+
+	<update id="updateUser" parameterType="Map">
+		UPDATE /* [AccountService.updateUser] 사용자 수정 */
+		TMP_USER SET
+		 UPD_ID       = #{session.userId}
+		,UPD_DTM      = NOW()
+		<if test="userPw != null userPw != ''">
+		,USER_PW      = #{userPw}
+		</if>
+		,USER_EMAIL   = #{userEmail}
+		,USER_NAME    = #{userName}
+		,COMPANY_CODE = #{companyCode}
+		,USE_YN       = #{useYn}
+		WHERE USER_ID = #{userId}
+	</update>
+
 </mapper>
