@@ -39,4 +39,26 @@
 		 WHERE USE_YN = 'Y'
 	</select>
 
+	<insert id="insertWorkBBS" parameterType="Map">
+		INSERT /*[WorkBBSService.insertWorkBBS] 업무 게시판 등록*/
+		  INTO TMP_BBS (
+		       BBS_TITLE
+			 , BBS_DESC
+			 , BBS_TARGET
+			 , REG_ID
+			 , REG_DTM
+			 , UPD_ID
+			 , UPD_DTM
+		  )  VALUES (
+		       #{title}
+		     , #{desc}
+		     , #{target}
+		     , #{session.userId}
+		     , NOW()
+		     , #{session.userId}
+		     , NOW()
+		  )
+
+	</insert>
+
 </mapper>

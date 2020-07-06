@@ -6,7 +6,7 @@
             <h4 class="card-title">업무 등록</h4>
         </div>
         <div class="card-body">
-            <form action="/test" type="post" encType="multipart/form-data" onsubmit="return fn_submitHandler();">
+            <form id="bbsfrm" onsubmit="return fn_submitHandler();">
                 <div class="row">
                     <div class="col-md-12 pr-2">
                         <div class="form-group">
@@ -27,7 +27,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>요청 대상</label>
-                            <select class="form-control" id="reqTarget">
+                            <select class="form-control" name="reqTarget" id="reqTarget">
                               <option value="">전체</option>
 						      <option value="10">SIANA</option>
 						      <option value="20">대명</option>
@@ -41,7 +41,7 @@
                         <div class="form-group">
                             <label>첨부파일</label>
                               <div class="custom-file">
-							    <input type="file" multiple="multiple" class="custom-file-input" id="atchFiles">
+							    <input type="file" name="file" multiple="multiple" class="custom-file-input" id="atchFiles">
 							    <label class="custom-file-label" for="atchFiles">Choose file...</label>
 							    <div class="invalid-feedback">Example invalid custom file feedback</div>
 							  </div>
@@ -78,11 +78,13 @@ $("#atchFiles").on("change",function(e){
 
 function fn_submitHandler(){
 	event.preventDefault();
-	console.log("TEST")
-	var title     = event.target.title.value
-	var desc      = event.target.desc.value
-	var reqTarget = event.target.reqTarget.value
-	var atchFiles = event.target.atchFiles.files
-	console.log(title,desc,reqTarget,atchFiles)
+	gfn_editorToElement("desc")
+	gfn_fetchWithForm({
+		url : "/bbs/workbbsWriteProc",
+		formEl:$("#bbsfrm"),
+		success : function(res){
+			console.log(res)
+		}
+	})
 }
 </script>

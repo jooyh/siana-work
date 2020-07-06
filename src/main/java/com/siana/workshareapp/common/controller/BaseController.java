@@ -1,14 +1,22 @@
 package com.siana.workshareapp.common.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siana.workshareapp.common.exception.FileException;
 import com.siana.workshareapp.common.utils.FileUtil;
 
@@ -32,8 +40,25 @@ public class BaseController {
 	 * </pre>
 	 */
 	public Map getParamMap(HttpServletRequest request) {
-		this.setParamMap(request.getAttribute("params"));
+		this.setParamMap(this.convertRequestToMap(request));
 		return paramMap;
+	}
+
+	public Map getParamMap(MultipartHttpServletRequest request) throws FileException{
+		Map parameterMap = new HashMap();
+		Enumeration enums = request.getParameterNames();
+		while(enums.hasMoreElements()){
+			String paramName = (String)enums.nextElement();
+			String[] parameters = request.getParameterValues(paramName);
+			if(parameters.length > 1){
+				parameterMap.put(paramName, parameters);
+			}else{
+				parameterMap.put(paramName, parameters[0]);
+			}
+		}
+		List files = this.getFileMap(request);
+		parameterMap.put("files",files);
+		return parameterMap;
 	}
 
 	/**
@@ -71,6 +96,67 @@ public class BaseController {
 	 */
 	public List getFileMap(MultipartHttpServletRequest request) throws FileException {
 		return fileUtil.uploadFiles(request);
+	}
+
+	/**
+	 * NAME : convertRequestToMap
+	 * DESC : 서버 요청 파라미터를 Map 형태로 변환
+	 * DATE : 2020. 4. 3.
+	 * <pre>
+	 * @auther SIWAN
+	 * @param request 서버로 전달된 요청
+	 * @return paramMap 맵형식으로 변환된 요청 파라미터
+	 * </pre>
+	 */
+	private static final String JSON_STRING_KEY = "params";
+	private Map convertRequestToMap(HttpServletRequest request){
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		StringBuffer json = new StringBuffer();
+		String line = null;
+
+		try {
+			BufferedReader reader = request.getReader();
+			while((line = reader.readLine()) != null) {
+				json.append(line);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String jsonString = json.toString();
+		if(StringUtils.hasText(jsonString)) { // JSON string으로 전달 한 경우
+			try {
+				ObjectMapper om = new ObjectMapper();
+				paramMap = om.readValue(jsonString, new TypeReference<Map<String, Object>>(){});
+				for( String key : paramMap.keySet() ){
+					if(paramMap.get(key) != null) {
+						String clsNm = paramMap.get(key).getClass().getName();
+						if("LIST".contains(clsNm.toUpperCase())) {
+							List<Map<String,Object>> cnvtList =
+									om.readValue(
+											paramMap.get(key).toString(), new TypeReference<List<Map<String,Object>>>(){}
+									);
+							paramMap.put(key,cnvtList);
+						}
+					}
+				}
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		Map sessionMap = (Map) request.getSession().getAttribute("userInfo");
+		paramMap.put("session", sessionMap);
+//		request.setAttribute("params", paramMap);
+		return paramMap;
 	}
 
 }

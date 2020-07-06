@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.view.AbstractView;
 
 import com.siana.workshareapp.common.exception.FileException;
+import com.siana.workshareapp.common.vo.FileVO;
 
 
 public class FileUtil extends AbstractView{
@@ -71,8 +72,8 @@ public class FileUtil extends AbstractView{
 					e.printStackTrace();
 					throw new FileException("파일생성 중 오류가 발생했습니다.");
 				}
-				Map fileMap = getFileMap(file,mf.getOriginalFilename(),inputNm);
-				uploadedFileList.add(fileMap);
+//				Map fileMap = getFileMap(file,mf.getOriginalFilename(),inputNm);
+				uploadedFileList.add(new FileVO(inputNm, mf.getOriginalFilename(), file.getName(), file.getPath(), mf.getSize()));
 			}
 		}
 		if(uploadedFileList.isEmpty()) throw new FileException("파일업로드 중 오류가 발생했습니다.",200);

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.siana.workshareapp.common.service.BaseService;
+import com.siana.workshareapp.common.vo.FileVO;
 
 @Service
 public class WorkBBSService extends BaseService{
@@ -45,5 +46,15 @@ public class WorkBBSService extends BaseService{
 		return sqlSession.selectOne(statement);
 	}
 
+	public boolean insertWorkBBS(Map params) {
 
+		List<FileVO> files = (List) params.get("files");
+		for(FileVO file : files) {
+
+		}
+		String bbsStatement = super.getStatement(this.getClass().getSimpleName(),"insertWorkBBS");
+		sqlSession.insert(bbsStatement);
+
+		return false;
+	}
 }
