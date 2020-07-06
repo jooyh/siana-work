@@ -30,7 +30,7 @@ public class BaseController {
 
 	/**
 	 * NAME : getParamMap
-	 * DESC : Interceptor 에서 정리된 파라미터를 Map 형식으로 전달
+	 * DESC : request 로 전달받은 파라미터를 Map 형식으로 전달
 	 * DATE : 2020. 7. 3.
 	 * <pre>
 	 * @auther jyh
@@ -40,22 +40,12 @@ public class BaseController {
 	 * </pre>
 	 */
 	public Map getParamMap(HttpServletRequest request) {
-		this.setParamMap(this.convertRequestToMap(request));
+		this.setParamMap(this.convertJsonRequestToMap(request));
 		return paramMap;
 	}
 
 	public Map getParamMap(MultipartHttpServletRequest request) throws FileException{
-		Map parameterMap = new HashMap();
-		Enumeration enums = request.getParameterNames();
-		while(enums.hasMoreElements()){
-			String paramName = (String)enums.nextElement();
-			String[] parameters = request.getParameterValues(paramName);
-			if(parameters.length > 1){
-				parameterMap.put(paramName, parameters);
-			}else{
-				parameterMap.put(paramName, parameters[0]);
-			}
-		}
+		Map parameterMap = convertRequestToMap(request);
 		List files = this.getFileMap(request);
 		parameterMap.put("files",files);
 		return parameterMap;
@@ -98,9 +88,26 @@ public class BaseController {
 		return fileUtil.uploadFiles(request);
 	}
 
+	private Map convertRequestToMap(HttpServletRequest request) {
+		Map parameterMap = new HashMap();
+		Enumeration enums = request.getParameterNames();
+		while(enums.hasMoreElements()){
+			String paramName = (String)enums.nextElement();
+			String[] parameters = request.getParameterValues(paramName);
+			if(parameters.length > 1){
+				parameterMap.put(paramName, parameters);
+			}else{
+				parameterMap.put(paramName, parameters[0]);
+			}
+		}
+		Map sessionMap = (Map) request.getSession().getAttribute("userInfo");
+		parameterMap.put("session", sessionMap);
+		return parameterMap;
+	}
+
 	/**
-	 * NAME : convertRequestToMap
-	 * DESC : 서버 요청 파라미터를 Map 형태로 변환
+	 * NAME : convertJsonRequestToMap
+	 * DESC : 서버로 요청된 JSON string 파라미터를 Map 형태로 변환
 	 * DATE : 2020. 4. 3.
 	 * <pre>
 	 * @auther SIWAN
@@ -108,8 +115,7 @@ public class BaseController {
 	 * @return paramMap 맵형식으로 변환된 요청 파라미터
 	 * </pre>
 	 */
-	private static final String JSON_STRING_KEY = "params";
-	private Map convertRequestToMap(HttpServletRequest request){
+	private Map convertJsonRequestToMap(HttpServletRequest request){
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		StringBuffer json = new StringBuffer();
 		String line = null;

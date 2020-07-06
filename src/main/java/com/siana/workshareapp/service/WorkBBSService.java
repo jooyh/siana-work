@@ -1,5 +1,6 @@
 package com.siana.workshareapp.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,14 +8,18 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.siana.workshareapp.common.exception.FileException;
 import com.siana.workshareapp.common.service.BaseService;
-import com.siana.workshareapp.common.vo.FileVO;
+import com.siana.workshareapp.common.service.CommonService;
 
 @Service
 public class WorkBBSService extends BaseService{
 
 	@Autowired
 	private SqlSession sqlSession;
+
+	@Autowired
+	private CommonService commonService;
 
 	/**
 	 * NAME : getWorkBBSList
@@ -26,9 +31,17 @@ public class WorkBBSService extends BaseService{
 	 * @return
 	 * </pre>
 	 */
-	public List getWorkBBSList(Map params) {
+	public Map getWorkBBSList(Map params) {
+		if(params.get("page") == null ) params.put("page",0);
 		String statement = super.getStatement(this.getClass().getSimpleName(),"getWorkBBSList");
-		return sqlSession.selectList(statement);
+		List bbsList = sqlSession.selectList(statement,params);
+		statement = super.getStatement(this.getClass().getSimpleName(),"getWorkBBSTotCnt");
+		int totCnt = sqlSession.selectOne(statement,params);
+		Map result = new HashMap();
+		result.put("datas", bbsList);
+		result.put("totCnt", totCnt);
+		result.put("params", params);
+		return result;
 	}
 
 	/**
@@ -46,15 +59,19 @@ public class WorkBBSService extends BaseService{
 		return sqlSession.selectOne(statement);
 	}
 
-	public boolean insertWorkBBS(Map params) {
-
-		List<FileVO> files = (List) params.get("files");
-		for(FileVO file : files) {
-
-		}
+	public boolean insertWorkBBS(Map params) throws FileException {
 		String bbsStatement = super.getStatement(this.getClass().getSimpleName(),"insertWorkBBS");
-		sqlSession.insert(bbsStatement);
-
-		return false;
+		boolean insertFlag = sqlSession.insert(bbsStatement,params) == 1;
+		if(insertFlag) {
+			List<Map> files = (List) params.get("files");
+			for(Map file : files) {
+				file.put("session",params.get("session"));
+				file.put("bbsId",params.get("bbsId"));
+				if(!commonService.insertFile(file)) {
+					throw new FileException("파일정보 저장중 오류가 발생하였습니다.");
+				}
+			}
+		}
+		return insertFlag;
 	}
 }

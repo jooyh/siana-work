@@ -6,3 +6,45 @@
 .form-container{
 	width:100%;
 }
+
+.file-container{
+	background-color: #eee;
+	padding : 10px;
+	min-height: 100px;
+}
+.file-container .file-wrap{
+	margin-bottom: 10px;
+}
+
+.icon-box{
+	width : 60px;
+	height : 60px;
+	border:1px solid black;
+	margin-right:10px;
+	text-align: center;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.icon-box .nc-icon{
+	font-size:50px;
+	line-height: 60px;
+}
+
+.file-container .icon-text-box{
+	display: inline-block;
+	vertical-align: middle;
+}
+.icon-text-box .title {
+	font-size : 20px;
+	font-weight: 700;
+	margin:0px;
+}
+.icon-text-box .desc {
+	font-size : 12px;
+	margin:0px;
+}
+.nc-icon.nc-simple-remove{
+	vertical-align: middle;
+	margin :10px
+}

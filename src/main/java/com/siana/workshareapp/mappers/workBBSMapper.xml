@@ -37,9 +37,16 @@
 			 , UPD_DTM     AS updDtm
 		  FROM TMP_BBS
 		 WHERE USE_YN = 'Y'
+		 LIMIT #{page}, 10
+	</select>
+	<select id="getWorkBBSTotCnt" parameterType="Map" resultType="int">
+		SELECT /*[WorkBBSService.getWorkBBSList] 업무 게시판 상세 조회*/
+			   COUNT(*) AS totCnt
+		  FROM TMP_BBS
+		 WHERE USE_YN = 'Y'
 	</select>
 
-	<insert id="insertWorkBBS" parameterType="Map">
+	<insert id="insertWorkBBS" parameterType="Map" useGeneratedKeys="true" keyProperty="bbsId">
 		INSERT /*[WorkBBSService.insertWorkBBS] 업무 게시판 등록*/
 		  INTO TMP_BBS (
 		       BBS_TITLE

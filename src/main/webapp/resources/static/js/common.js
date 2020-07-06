@@ -3,6 +3,7 @@ function gfn_fetch(option){
 		url : option.url,
 		type : option.type ? option.type : "POST",
 	    data : JSON.stringify(option.data ? option.data : {}),
+//		data : option.data ? option.data : {},
 	    success : function(response){
 	    	option.success(response)
 	    },
@@ -20,8 +21,7 @@ function gfn_fetch(option){
 	})
 }
 
-function gfn_fetchWithForm(option){
-	var formData = new FormData(option.formEl[0]);
+function gfn_fetchWithFormData(option){
 
 	$.ajax({
 		url : option.url,
@@ -29,7 +29,7 @@ function gfn_fetchWithForm(option){
 		enctype: 'multipart/form-data',
 		processData: false,
 		contentType: false,
-	    data : formData,
+	    data : option.formData,
 	    success : function(response){
 	    	option.success(response)
 	    },
@@ -48,6 +48,19 @@ function gfn_fetchWithForm(option){
 
 }
 
+function gfn_getFormData(form,files){
+	form.each(function(i,item){
+		if($(item).attr("type") === "file"){
+			$(item).attr("name","");
+		}
+	});
+	var formData = new FormData(form[0]);
+	for(var i in files){
+		formData.append("files",files[i]);
+	}
+	return formData;
+}
+
 var oEditors = [];
 function gfn_initTextEditor(elId,content){
 	nhn.husky.EZCreator.createInIFrame({
@@ -63,4 +76,14 @@ function gfn_initTextEditor(elId,content){
 
 function gfn_editorToElement(elId){
 	oEditors.getById[elId].exec("UPDATE_CONTENTS_FIELD", []);
+}
+
+function gfn_getCommCd(grpCd,cb){
+	gfn_fetch({
+		url : "/getCode",
+		data : {grpCd:grpCd},
+		success : function(res){
+			cb(res);
+		}
+	})
 }

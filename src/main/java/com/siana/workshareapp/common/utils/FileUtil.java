@@ -72,8 +72,9 @@ public class FileUtil extends AbstractView{
 					e.printStackTrace();
 					throw new FileException("파일생성 중 오류가 발생했습니다.");
 				}
-//				Map fileMap = getFileMap(file,mf.getOriginalFilename(),inputNm);
-				uploadedFileList.add(new FileVO(inputNm, mf.getOriginalFilename(), file.getName(), file.getPath(), mf.getSize()));
+				Map fileMap = getFileMap(file,mf.getOriginalFilename(),inputNm);
+				uploadedFileList.add(fileMap);
+//				uploadedFileList.add(new FileVO(inputNm, mf.getOriginalFilename(), file.getName(), file.getPath(), mf.getSize()));
 			}
 		}
 		if(uploadedFileList.isEmpty()) throw new FileException("파일업로드 중 오류가 발생했습니다.",200);

@@ -1,6 +1,5 @@
 package com.siana.workshareapp.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.siana.workshareapp.common.controller.BaseController;
 import com.siana.workshareapp.common.exception.FileException;
+import com.siana.workshareapp.common.service.CommonService;
 import com.siana.workshareapp.common.vo.ResultMap;
 import com.siana.workshareapp.service.WorkBBSService;
 
@@ -22,6 +22,9 @@ import com.siana.workshareapp.service.WorkBBSService;
 public class WorkBBSController extends BaseController{
 	@Autowired
 	private WorkBBSService workBBSService;
+
+	@Autowired
+	private CommonService commonService;
 
 	/*********[get Page]********************************************************************/
 	/**
@@ -34,7 +37,7 @@ public class WorkBBSController extends BaseController{
 	 * </pre>
 	 */
 	@RequestMapping("/bbs/main")
-	public String bbsMainPage() {
+	public String bbsMainPage(HttpServletRequest request) {
 		return "bbs/main.part";
 	}
 
@@ -78,6 +81,7 @@ public class WorkBBSController extends BaseController{
 	@ResponseBody
 	public Map workbbsWriteProc(MultipartHttpServletRequest request , HttpServletResponse response) throws FileException {
 		Map paramMap = super.getParamMap(request);
+		workBBSService.insertWorkBBS(paramMap);
 		return paramMap;
 	}
 }

@@ -42,6 +42,24 @@
     </div>
 </div>
 <script>
+	function fn_pageInit(){
+		gfn_getCommCd("1000",function(res){
+			console.log(res.result);
+		});
+
+		fn_getBBSList();
+	}
+
+	function fn_getBBSList(){
+		gfn_fetch({
+			url : "/bbs/getWorkbbsList",
+			/* data : {page:0}, */
+			success : function(res){
+				console.log(res);
+			}
+		})
+	}
+
 	$("#btn-regist").click(function(){
 		location.href= "/bbs/workbbsWrite";
 	});
