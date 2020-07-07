@@ -17,6 +17,16 @@ public class CommonController extends BaseController{
 	private CommonService commonService;
 
 
+	/**
+	 * NAME : getCommCode
+	 * DESC : 공통코드 조회
+	 * DATE : 2020. 7. 7.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @return
+	 * </pre>
+	 */
 	@RequestMapping("getCode")
 	@ResponseBody
 	public ResultMap getCommCode(HttpServletRequest request) {

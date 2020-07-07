@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.siana.workshareapp.common.exception.FileException;
 import com.siana.workshareapp.common.service.BaseService;
 import com.siana.workshareapp.common.service.CommonService;
+import com.siana.workshareapp.common.utils.Pagination;
 
 @Service
 public class WorkBBSService extends BaseService{
@@ -32,15 +33,20 @@ public class WorkBBSService extends BaseService{
 	 * </pre>
 	 */
 	public Map getWorkBBSList(Map params) {
-		if(params.get("page") == null ) params.put("page",0);
+		String statementForTotCnt= super.getStatement(this.getClass().getSimpleName(),"getWorkBBSTotCnt");
+		int totCnt = sqlSession.selectOne(statementForTotCnt,params);
+
+		Integer page = (Integer) params.get("page") == null? 1:(Integer) params.get("page");
+		Integer range = (Integer) params.get("range") == null? 1:(Integer) params.get("range");
+		Pagination pageInfo = new Pagination(totCnt,page);
+		params.put("pageInfo",pageInfo);
+
 		String statement = super.getStatement(this.getClass().getSimpleName(),"getWorkBBSList");
 		List bbsList = sqlSession.selectList(statement,params);
-		statement = super.getStatement(this.getClass().getSimpleName(),"getWorkBBSTotCnt");
-		int totCnt = sqlSession.selectOne(statement,params);
+
 		Map result = new HashMap();
+		result.put("pageInfo",pageInfo);
 		result.put("datas", bbsList);
-		result.put("totCnt", totCnt);
-		result.put("params", params);
 		return result;
 	}
 
@@ -56,9 +62,22 @@ public class WorkBBSService extends BaseService{
 	 */
 	public Map getWorkBBSDetail(Map params) {
 		String statement = super.getStatement(this.getClass().getSimpleName(),"getWorkBBSDetail");
-		return sqlSession.selectOne(statement);
+		Map data = sqlSession.selectOne(statement,params);
+		data.put("files",commonService.selectFiles(params));
+		return data;
 	}
 
+	/**
+	 * NAME : insertWorkBBS
+	 * DESC : 게시물 등록
+	 * DATE : 2020. 7. 7.
+	 * <pre>
+	 * @auther jyh
+	 * @param params
+	 * @return
+	 * @throws FileException
+	 * </pre>
+	 */
 	public boolean insertWorkBBS(Map params) throws FileException {
 		String bbsStatement = super.getStatement(this.getClass().getSimpleName(),"insertWorkBBS");
 		boolean insertFlag = sqlSession.insert(bbsStatement,params) == 1;
@@ -74,4 +93,5 @@ public class WorkBBSService extends BaseService{
 		}
 		return insertFlag;
 	}
+
 }

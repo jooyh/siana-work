@@ -9,7 +9,6 @@ public class BaseService {
 		return sb.toString();
 	}
 
-
 	protected boolean validParams(Map params,String ... validKeys) {
 		return true;
 	}

@@ -3,41 +3,43 @@
 <mapper namespace="WorkBBSService">
 
 	<select id="getWorkBBSDetail" parameterType="Map" resultType="Map">
-		SELECT /*[WorkBBSService.getWorkBBSList] 업무 게시판 상세 조회*/
+		SELECT /*[WorkBBSService.getWorkBBSDetail] 업무 게시판 상세조회*/
 			   BBS_ID      AS bbsId
 			 , BBS_TITLE   AS bbsTitle
 			 , BBS_DESC    AS bbsDesc
-			 , BBS_STATUS  AS bbsStatus
-			 , BBS_TARGET  AS bbsTarget
+			 , BBS_STATUS  AS bbsStatusCd
+			 , CD.COMM_NM  AS bbsStatus
+			 , (SELECT COMM_NM FROM API_COMM_CD CD2 WHERE CD2.GRP_CD = '2000' AND COMM_CD = BBS_TARGET ) AS bbsTarget
 			 , ETC         AS etc
-			 , REQ_DTM     AS reqDtm
-			 , RES_DTM     AS resDtm
-			 , REG_ID      AS regId
-			 , REG_DTM     AS regDtm
-			 , UPD_ID      AS updId
-			 , UPD_DTM     AS updDtm
-		  FROM TMP_BBS
-		 WHERE USE_YN = 'Y'
+			 , (SELECT USER_NAME FROM TMP_USER WHERE USER_ID = BBS.REG_ID) AS regNm
+			 , (SELECT USER_NAME FROM TMP_USER WHERE USER_ID = BBS.UPD_ID) AS updNm
+			 , DATE_FORMAT(REG_DTM,'%Y-%m-%d') AS regDtm
+			 , DATE_FORMAT(UPD_DTM,'%Y-%m-%d') AS updDtm
+		  FROM TMP_BBS BBS
+		     , API_COMM_CD CD
+		 WHERE BBS.BBS_STATUS = CD.COMM_CD
+		   AND CD.GRP_CD = '1000'
+		   AND BBS.USE_YN = 'Y'
 		   AND BBS_ID = ${bbsId}
 	</select>
 
 	<select id="getWorkBBSList" parameterType="Map" resultType="Map">
-		SELECT /*[WorkBBSService.getWorkBBSList] 업무 게시판 상세 조회*/
+		SELECT /*[WorkBBSService.getWorkBBSList] 업무 게시판 목록조회*/
 			   BBS_ID      AS bbsId
 			 , BBS_TITLE   AS bbsTitle
 			 , BBS_DESC    AS bbsDesc
-			 , BBS_STATUS  AS bbsStatus
-			 , BBS_TARGET  AS bbsTarget
+			 , CD.COMM_NM  AS bbsStatus
 			 , ETC         AS etc
-			 , REQ_DTM     AS reqDtm
-			 , RES_DTM     AS resDtm
-			 , REG_ID      AS regId
-			 , REG_DTM     AS regDtm
-			 , UPD_ID      AS updId
-			 , UPD_DTM     AS updDtm
-		  FROM TMP_BBS
-		 WHERE USE_YN = 'Y'
-		 LIMIT #{page}, 10
+			 , DATE_FORMAT(REG_DTM,'%Y-%m-%d') AS regDtm
+			 , DATE_FORMAT(UPD_DTM,'%Y-%m-%d') AS updDtm
+			 , (SELECT USER_NAME FROM TMP_USER WHERE USER_ID = BBS.REG_ID) AS regNm
+			 , (SELECT USER_NAME FROM TMP_USER WHERE USER_ID = BBS.UPD_ID) AS updNm
+		  FROM TMP_BBS BBS
+		     , API_COMM_CD CD
+		 WHERE BBS.BBS_STATUS = CD.COMM_CD
+		   AND CD.GRP_CD = '1000'
+		   AND BBS.USE_YN = 'Y'
+		 LIMIT #{pageInfo.startIndex}, #{pageInfo.pageSize}
 	</select>
 	<select id="getWorkBBSTotCnt" parameterType="Map" resultType="int">
 		SELECT /*[WorkBBSService.getWorkBBSList] 업무 게시판 상세 조회*/
@@ -59,13 +61,51 @@
 		  )  VALUES (
 		       #{title}
 		     , #{desc}
-		     , #{target}
+		     , #{bbsTarget}
 		     , #{session.userId}
 		     , NOW()
 		     , #{session.userId}
 		     , NOW()
 		  )
+	</insert>
 
+	<update id="updateBBSStatus" parameterType="Map">
+		UPDATE /*[WorkBBSService.updateBBSStatus] 게시판 상태 수정*/
+		TMP_BBS SET BBS_STATUS = #{bbsStatus}
+		WHERE BBS_ID = #{bbsId}
+	</update>
+
+	<insert id="insertBBSHistory">
+		INSERT /*[WorkBBSService.insertBBSHistory] 게시판 수정 이력 등록*/
+		INTO TMP_BBS_HIST (
+			 BBS_ID
+			,BBS_TITLE
+			,BBS_DESC
+			,BBS_STATUS
+			,BBS_TARGET
+			,ETC
+			,REQ_DTM
+			,RES_DTM
+			,USE_YN
+			,REG_ID
+			,REG_DTM
+			,UPD_ID
+			,UPD_DTM
+		) SELECT BBS_ID
+				,BBS_TITLE
+				,BBS_DESC
+				,BBS_STATUS
+				,BBS_TARGET
+				,#{etc} ETC
+				,REQ_DTM
+				,RES_DTM
+				,USE_YN
+				,REG_ID
+				,REG_DTM
+				,UPD_ID
+				,UPD_DTM
+		   FROM TMP_BBS
+		  WHERE BBS_ID = #{bbsId}
 	</insert>
 
 </mapper>

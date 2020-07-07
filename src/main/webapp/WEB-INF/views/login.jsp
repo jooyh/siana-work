@@ -36,7 +36,7 @@
 		var userId = event.target.userId.value;
 		var userPw= event.target.userPw.value;
 
-		gfn_fetch({
+		gfn_fetch.post({
 			url : "/bbs/loginProc",
 			data : {userId : userId ,userPw : userPw},
 			success:function(data){

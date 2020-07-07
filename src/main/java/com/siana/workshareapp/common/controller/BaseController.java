@@ -30,7 +30,7 @@ public class BaseController {
 
 	/**
 	 * NAME : getParamMap
-	 * DESC : request 로 전달받은 파라미터를 Map 형식으로 전달
+	 * DESC : HttpServletRequest 로 전달받은 파라미터를 Map 형식으로 전달
 	 * DATE : 2020. 7. 3.
 	 * <pre>
 	 * @auther jyh
@@ -44,6 +44,17 @@ public class BaseController {
 		return paramMap;
 	}
 
+	/**
+	 * NAME : getParamMap
+	 * DESC : MultipartHttpServletRequest 로 전달받은 파라미터를 Map 형식으로 전달 (file 업로드 포함)
+	 * DATE : 2020. 7. 7.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @return
+	 * @throws FileException
+	 * </pre>
+	 */
 	public Map getParamMap(MultipartHttpServletRequest request) throws FileException{
 		Map parameterMap = convertRequestToMap(request);
 		List files = this.getFileMap(request);

@@ -34,8 +34,8 @@
 		  )
 	</insert>
 
-	<select id="selectFile" parameterType="Map" resultType="Map">
-		SELECT /*[CommonService.selectFile] 파일 정보 조회*/
+	<select id="selectFiles" parameterType="Map" resultType="Map">
+		SELECT /*[CommonService.selectFiles] 파일 정보 조회*/
 				FILE_SNM  AS fileSnm
 			 ,  FILE_ONM  AS fileOnm
 			 ,  FILE_PATH AS filePath

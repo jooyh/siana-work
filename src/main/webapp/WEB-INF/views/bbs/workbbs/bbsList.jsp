@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<script src="/resources/static/js/pagination.js"></script>
 <div class="col-md-12">
     <div class="card">
         <div class="card-header ">
@@ -14,7 +15,7 @@
 			</div>
         </div>
         <div class="card-body table-full-width table-responsive">
-            <table class="table table-hover ">
+            <table class="table table-hover" id="tbl-work">
                 <thead>
                     <tr>
 	                    <th>No</th>
@@ -27,35 +28,40 @@
                 	</tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>제모오오오오오옥</td>
-                        <td>주영현</td>
-                        <td>2020.05.20</td>
-                        <td>주영현</td>
-                        <td>2020.05.20</td>
-                        <td>요청</td>
-                    </tr>
+
                 </tbody>
             </table>
         </div>
     </div>
+    <div class="pagenation-container"></div>
 </div>
 <script>
 	function fn_pageInit(){
-		gfn_getCommCd("1000",function(res){
-			console.log(res.result);
-		});
-
-		fn_getBBSList();
+		fn_getBBSList(0);
 	}
 
 	function fn_getBBSList(){
-		gfn_fetch({
+		var params = gfn_getQueryParam();
+		gfn_fetch.post({
 			url : "/bbs/getWorkbbsList",
-			/* data : {page:0}, */
+			data : params,
 			success : function(res){
-				console.log(res);
+				console.log(res.result)
+				new Pagenation("/bbs/workbbs",res.result.pageInfo,params)
+				var html = "";
+				for(var i in res.result.datas){
+					var bbs = res.result.datas[i];
+					html+="<tr onclick='location.href=\"/bbs/workbbsDetail?bbsId="+bbs.bbsId+"\"'>";
+					html+="<td>"+bbs.bbsId+"</td>";
+					html+="<td>"+bbs.bbsTitle+"</td>";
+					html+="<td>"+bbs.regNm+"</td>";
+					html+="<td>"+bbs.regDtm+"</td>";
+					html+="<td>"+bbs.updNm+"</td>";
+					html+="<td>"+bbs.updDtm+"</td>";
+					html+="<td>"+bbs.bbsStatus+"</td>";
+					html+="</tr>";
+				}
+				$("#tbl-work tbody").empty().append(html);
 			}
 		})
 	}

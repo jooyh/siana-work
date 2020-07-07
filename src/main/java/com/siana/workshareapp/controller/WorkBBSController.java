@@ -56,6 +56,20 @@ public class WorkBBSController extends BaseController{
 	}
 
 	/**
+	 * NAME : workbbsDetailPage
+	 * DESC : 업무게시판 상세 이동
+	 * DATE : 2020. 7. 7.
+	 * <pre>
+	 * @auther jyh
+	 * @return
+	 * </pre>
+	 */
+	@RequestMapping("/bbs/workbbsDetail")
+	public String workbbsDetailPage() {
+		return "bbs/workbbs/bbsDetail.part";
+	}
+
+	/**
 	 * NAME : workbbsWritePage
 	 * DESC : 업무게시판 등록 페이지 이동
 	 * DATE : 2020. 7. 3.
@@ -71,12 +85,52 @@ public class WorkBBSController extends BaseController{
 
 	/*********[get Data]********************************************************************/
 
+	/**
+	 * NAME : getWorkbbsList
+	 * DESC : 업무공유 게시판 목록 조회
+	 * DATE : 2020. 7. 7.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * </pre>
+	 */
 	@RequestMapping("/bbs/getWorkbbsList")
 	@ResponseBody
 	public ResultMap getWorkbbsList(HttpServletRequest request , HttpServletResponse response) {
 		return new ResultMap(workBBSService.getWorkBBSList(super.getParamMap(request)));
 	}
 
+	/**
+	 * NAME : getWorkbbsDetail
+	 * DESC : 게시판 상세 조회
+	 * DATE : 2020. 7. 7.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * </pre>
+	 */
+	@RequestMapping("/bbs/getWorkbbsDetail")
+	@ResponseBody
+	public ResultMap getWorkbbsDetail(HttpServletRequest request , HttpServletResponse response) {
+		return new ResultMap(workBBSService.getWorkBBSDetail(super.getParamMap(request)));
+	}
+
+	/**
+	 * NAME : workbbsWriteProc
+	 * DESC : 업무공유 게시판 작성
+	 * DATE : 2020. 7. 7.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws FileException
+	 * </pre>
+	 */
 	@RequestMapping("/bbs/workbbsWriteProc")
 	@ResponseBody
 	public Map workbbsWriteProc(MultipartHttpServletRequest request , HttpServletResponse response) throws FileException {

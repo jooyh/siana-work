@@ -27,7 +27,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>요청 대상</label>
-                            <select class="form-control" name="reqTarget" id="reqTarget">
+                            <select class="form-control" name="bbsTarget" id="bbsTarget">
 						    </select>
                         </div>
                     </div>
@@ -71,7 +71,7 @@ function fn_pageInit(){
 		for(var i in commCd){
 			html+= "<option value='"+commCd[i].commCd+"'>"+commCd[i].commNm+"</option>"
 		}
-		$("#reqTarget").append(html)
+		$("#bbsTarget").append(html)
 	})
 }
 
@@ -100,7 +100,7 @@ function fn_submitHandler(){
 
 	var formData = gfn_getFormData($("#bbsfrm") , filesData);
 
-	gfn_fetchWithFormData({
+	gfn_fetch.formData({
 		url : "/bbs/workbbsWriteProc",
 		formData:formData,
 		success : function(res){
