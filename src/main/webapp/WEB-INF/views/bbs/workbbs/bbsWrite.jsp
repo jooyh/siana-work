@@ -104,12 +104,12 @@ function fn_submitHandler(){
 	var formData = gfn_getFormData($("#bbsfrm") , filesData);
 
 	gfn_fetch.formData({
-		url : "/bbs/workbbsWriteProc",
+		url : "/servlet/bbs/workbbsWriteProc",
 		formData:formData,
 		success : function(res){
 			if(res.result){
 				alert("성공적으로 등록 되었습니다.")
-				location.href = "/bbs/workbbs";
+				location.href = "/servlet/bbs/workbbs";
 			}
 		}
 	})

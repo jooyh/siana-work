@@ -11,7 +11,7 @@
     -->
     <div class="sidebar-wrapper">
         <div class="logo">
-            <a href="/bbs/workbbs" class="simple-text">
+            <a href="/servlet/bbs/workbbs" class="simple-text">
                 SIANA
                 <!-- <img src="/resources/static/images/img_logo.png" alt="시아나로고"> -->
             </a>
@@ -29,7 +29,7 @@
 
 <script>
 	var menuList = [
-		{url : "/bbs/workbbs" , menuNm : "업무게시판" , menuCd : "1000"},
+		{url : "/servlet/bbs/workbbs" , menuNm : "업무게시판" , menuCd : "1000"},
 		/* {url : "/bbs/workbbs" , menuNm : "업무게시판" , menuCd : "2000"}, */
 	]
 	var menuEl = "";

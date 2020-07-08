@@ -19,7 +19,7 @@ import com.siana.workshareapp.service.CommentService;
 import com.siana.workshareapp.service.WorkBBSService;
 
 @Controller
-@RequestMapping()
+@RequestMapping("servlet/bbs")
 public class WorkBBSController extends BaseController{
 	@Autowired
 	private WorkBBSService workBBSService;
@@ -40,7 +40,7 @@ public class WorkBBSController extends BaseController{
 	 * @return
 	 * </pre>
 	 */
-	@RequestMapping("/bbs/main")
+	@RequestMapping("main")
 	public String bbsMainPage(HttpServletRequest request) {
 		return "bbs/main.part";
 	}
@@ -54,7 +54,7 @@ public class WorkBBSController extends BaseController{
 	 * @return
 	 * </pre>
 	 */
-	@RequestMapping("/bbs/workbbs")
+	@RequestMapping("workbbs")
 	public String workbbsPage() {
 		return "bbs/workbbs/bbsList.part";
 	}
@@ -68,7 +68,7 @@ public class WorkBBSController extends BaseController{
 	 * @return
 	 * </pre>
 	 */
-	@RequestMapping("/bbs/workbbsDetail")
+	@RequestMapping("workbbsDetail")
 	public String workbbsDetailPage() {
 		return "bbs/workbbs/bbsDetail.part";
 	}
@@ -82,7 +82,7 @@ public class WorkBBSController extends BaseController{
 	 * @return
 	 * </pre>
 	 */
-	@RequestMapping("/bbs/workbbsWrite")
+	@RequestMapping("workbbsWrite")
 	public String workbbsWritePage() {
 		return "bbs/workbbs/bbsWrite.part";
 	}
@@ -100,7 +100,7 @@ public class WorkBBSController extends BaseController{
 	 * @return
 	 * </pre>
 	 */
-	@RequestMapping("/bbs/getWorkbbsList")
+	@RequestMapping("getWorkbbsList")
 	@ResponseBody
 	public ResultMap getWorkbbsList(HttpServletRequest request , HttpServletResponse response) {
 		return new ResultMap(workBBSService.getWorkBBSList(super.getParamMap(request)));
@@ -117,7 +117,7 @@ public class WorkBBSController extends BaseController{
 	 * @return
 	 * </pre>
 	 */
-	@RequestMapping("/bbs/getWorkbbsDetail")
+	@RequestMapping("getWorkbbsDetail")
 	@ResponseBody
 	public ResultMap getWorkbbsDetail(HttpServletRequest request , HttpServletResponse response) {
 		return new ResultMap(workBBSService.getWorkBBSDetail(super.getParamMap(request)));
@@ -135,7 +135,7 @@ public class WorkBBSController extends BaseController{
 	 * @throws FileException
 	 * </pre>
 	 */
-	@RequestMapping("/bbs/workbbsWriteProc")
+	@RequestMapping("workbbsWriteProc")
 	@ResponseBody
 	public ResultMap workbbsWriteProc(MultipartHttpServletRequest request , HttpServletResponse response) throws FileException {
 		Map paramMap = super.getParamMap(request);
@@ -153,7 +153,7 @@ public class WorkBBSController extends BaseController{
 	 * @return
 	 * </pre>
 	 */
-	@RequestMapping("/bbs/updateStatus")
+	@RequestMapping("updateStatus")
 	@ResponseBody
 	public ResultMap updateStatus(HttpServletRequest request , HttpServletResponse response) {
 		Map params = super.getParamMap(request);
@@ -171,7 +171,7 @@ public class WorkBBSController extends BaseController{
 	 * @return
 	 * </pre>
 	 */
-	@RequestMapping("/bbs/registComment")
+	@RequestMapping("registComment")
 	@ResponseBody
 	public ResultMap registComment(HttpServletRequest request , HttpServletResponse response) {
 		Map params = super.getParamMap(request);

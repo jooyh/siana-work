@@ -43,15 +43,15 @@
 	function fn_getBBSList(){
 		var params = gfn_getQueryParam();
 		gfn_fetch.post({
-			url : "/bbs/getWorkbbsList",
+			url : "/servlet/bbs/getWorkbbsList",
 			data : params,
 			success : function(res){
 				console.log(res.result)
-				new Pagenation("/bbs/workbbs",res.result.pageInfo,params)
+				new Pagenation("/servlet/bbs/workbbs",res.result.pageInfo,params)
 				var html = "";
 				for(var i in res.result.datas){
 					var bbs = res.result.datas[i];
-					html+="<tr onclick='location.href=\"/bbs/workbbsDetail?bbsId="+bbs.bbsId+"\"'>";
+					html+="<tr onclick='location.href=\"/servlet/bbs/workbbsDetail?bbsId="+bbs.bbsId+"\"'>";
 					html+="<td>"+bbs.bbsId+"</td>";
 					html+="<td>"+bbs.bbsTitle+"</td>";
 					html+="<td>"+bbs.regNm+"</td>";
@@ -68,6 +68,6 @@
 	}
 
 	$("#btn-regist").click(function(){
-		location.href= "/bbs/workbbsWrite";
+		location.href= "/servlet/bbs/workbbsWrite";
 	});
 </script>

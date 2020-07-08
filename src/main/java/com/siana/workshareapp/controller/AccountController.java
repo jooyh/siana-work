@@ -22,7 +22,7 @@ import com.siana.workshareapp.service.AccountService;
  *
  */
 @Controller
-@RequestMapping("bbs")
+@RequestMapping("servlet/bbs")
 public class AccountController extends BaseController{
 
 	protected static final Logger logger = LoggerFactory.getLogger(AccountController.class);

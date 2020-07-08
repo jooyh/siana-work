@@ -16,6 +16,7 @@ import com.siana.workshareapp.common.service.CommonService;
 import com.siana.workshareapp.common.vo.ResultMap;
 
 @Controller
+@RequestMapping("servlet/bbs")
 public class CommonController extends BaseController{
 
 	@Autowired

@@ -99,7 +99,7 @@ function gfn_editorToElement(elId){
 
 function gfn_getCommCd(grpCd,cb){
 	gfn_fetch.post({
-		url : "/getCode",
+		url : "/servlet/bbs/getCode",
 		data : {grpCd:grpCd},
 		success : function(res){
 			cb(res);

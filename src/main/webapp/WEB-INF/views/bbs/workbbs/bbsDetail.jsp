@@ -125,7 +125,7 @@ ul{
 		var param = gfn_getQueryParam();
 		console.log(param);
 		gfn_fetch.post({
-			url : "/bbs/getWorkbbsDetail",
+			url : "/servlet/bbs/getWorkbbsDetail",
 			data : param,
 			success : function(res){
 				console.log(res);
@@ -145,7 +145,7 @@ ul{
 		for(var i=0; i<files.length; i++){
 			html += '<div class="file-wrap" data-title="'+files[i].fileOnm+'">';
 			html += '<div class="icon-text-box">';
-			html += '<a href="/fileDownload?path='+encodeURI(files[i].filePath)+'"';
+			html += '<a href="/servlet/bbs/fileDownload?path='+encodeURI(files[i].filePath)+'"';
 			html += '<p class="title detail">'+files[i].fileOnm+'</p>';
 			html += '</a>'
 			html += '</div>';
@@ -177,7 +177,7 @@ ul{
 			return alert("변경 내역이 없습니다.");
 		}
 		gfn_fetch.post({
-			url : "/bbs/updateStatus",
+			url : "/servlet/bbs/updateStatus",
 			data : {bbsStatus : bbsStatus , bbsId : orgData.bbsId},
 			success : function(res){
 				if(res.result){
@@ -196,7 +196,7 @@ ul{
 		}
 
 		gfn_fetch.post({
-			url : "/bbs/registComment",
+			url : "/servlet/bbs/registComment",
 			data : {comment : comment , bbsId : orgData.bbsId},
 			success : function(res){
 				if(res.result){
