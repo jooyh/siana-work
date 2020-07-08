@@ -3,25 +3,25 @@
 <mapper namespace="CommonService">
 
 	<select id="selectCommCdList" parameterType="Map" resultType="Map">
-		SELECT /*[CommonService.selectCommCdList] 공통코드 조*/
+		SELECT /*[CommonService.selectCommCdList] 공통코드 조회*/
 				 COMM_CD AS commCd
 				,COMM_NM AS commNm
 				,GRP_CD  AS grpCd
-		  FROM  API_COMM_CD
+		  FROM  HMP_COMM_CD
 		 WHERE  GRP_CD = #{grpCd}
 	</select>
 
 	<insert id="insertFile" parameterType="Map" >
-		INSERT /*[CommonService.insertFile] 파일 정보 등*/
-		  INTO TMP_ATCH_FILE (
-			 bbs_id
-			,file_snm
-			,file_onm
-			,file_path
-			,reg_id
-			,upd_id
-			,reg_dtm
-			,upd_dtm
+		INSERT /*[CommonService.insertFile] 파일 정보 등록*/
+		  INTO HMP_ATCH_FILE (
+			 BBS_ID
+			,FILE_SNM
+			,FILE_ONM
+			,FILE_PATH
+			,REG_ID
+			,UPD_ID
+			,REG_DTM
+			,UPD_DTM
 		  ) VALUES (
 		  	 #{bbsId}
 		  	,#{sNm}
@@ -39,7 +39,7 @@
 				FILE_SNM  AS fileSnm
 			 ,  FILE_ONM  AS fileOnm
 			 ,  FILE_PATH AS filePath
-		  FROM  TMP_ATCH_FILE
+		  FROM  HMP_ATCH_FILE
 		 WHERE  BBS_ID = #{bbsId}
 	</select>
 </mapper>

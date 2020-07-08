@@ -27,7 +27,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>요청 대상</label>
-                            <select class="form-control" name="bbsTarget" id="bbsTarget">
+                            <select class="form-control" name="workTarget" id="workTarget">
 						    </select>
                         </div>
                     </div>
@@ -71,7 +71,7 @@ function fn_pageInit(){
 		for(var i in commCd){
 			html+= "<option value='"+commCd[i].commCd+"'>"+commCd[i].commNm+"</option>"
 		}
-		$("#bbsTarget").append(html)
+		$("#workTarget").append(html)
 	})
 }
 
@@ -97,14 +97,20 @@ $("#tmpFiles").on("change",function(e){
 function fn_submitHandler(){
 	event.preventDefault();
 	gfn_editorToElement("desc")
+	if(!event.target.title.value.length) return alert("제목을 입력 해 주세요.");
+	if(!event.target.desc.value.length) return alert("내용을 입력 해 주세요.");
 
+	if(!confirm("등록하시겠습니까?")) return false;
 	var formData = gfn_getFormData($("#bbsfrm") , filesData);
 
 	gfn_fetch.formData({
 		url : "/bbs/workbbsWriteProc",
 		formData:formData,
 		success : function(res){
-			console.log(res)
+			if(res.result){
+				alert("성공적으로 등록 되었습니다.")
+				location.href = "/bbs/workbbs";
+			}
 		}
 	})
 }

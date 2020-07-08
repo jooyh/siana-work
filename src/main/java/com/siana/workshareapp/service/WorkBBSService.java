@@ -22,6 +22,9 @@ public class WorkBBSService extends BaseService{
 	@Autowired
 	private CommonService commonService;
 
+	@Autowired
+	private CommentService commentService;
+
 	/**
 	 * NAME : getWorkBBSList
 	 * DESC : 업무게시판 목록 조회
@@ -64,6 +67,7 @@ public class WorkBBSService extends BaseService{
 		String statement = super.getStatement(this.getClass().getSimpleName(),"getWorkBBSDetail");
 		Map data = sqlSession.selectOne(statement,params);
 		data.put("files",commonService.selectFiles(params));
+		data.put("comments",commentService.selectComment(params));
 		return data;
 	}
 
@@ -94,4 +98,8 @@ public class WorkBBSService extends BaseService{
 		return insertFlag;
 	}
 
+	public boolean updateBBSStatus(Map param) {
+		String statement = super.getStatement(this.getClass().getSimpleName(),"updateBBSStatus");
+		return sqlSession.update(statement,param) > 0;
+	}
 }

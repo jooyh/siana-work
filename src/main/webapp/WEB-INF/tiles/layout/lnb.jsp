@@ -11,8 +11,9 @@
     -->
     <div class="sidebar-wrapper">
         <div class="logo">
-            <a href="/bbs/main" class="simple-text">
-                SIANA 업무게시판
+            <a href="/bbs/workbbs" class="simple-text">
+                SIANA
+                <!-- <img src="/resources/static/images/img_logo.png" alt="시아나로고"> -->
             </a>
         </div>
         <ul class="nav">

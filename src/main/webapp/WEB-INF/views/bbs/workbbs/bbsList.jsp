@@ -61,6 +61,7 @@
 					html+="<td>"+bbs.bbsStatus+"</td>";
 					html+="</tr>";
 				}
+				if(!html.length) html = "<tr><td colspan=7> 데이터가 없습니다. </td></tr>"
 				$("#tbl-work tbody").empty().append(html);
 			}
 		})

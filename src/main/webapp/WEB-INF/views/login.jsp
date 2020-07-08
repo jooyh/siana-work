@@ -7,7 +7,9 @@
 	            <div id="login-column" class="col-md-6">
 	                <div id="login-box" class="col-md-12">
 	                    <form id="login-form" class="form" action="/" method="post" onsubmit="return fn_submit();">
-	                        <h3 class="text-center text-info">Siana 업무 게시판</h3>
+	                        <h3 class="text-center text-info pb-3">
+	                        	 <img src="/resources/static/images/img_logo.png" alt="시아나로고">
+	                        </h3>
 	                        <div class="form-group">
 	                            <label for="userId" class="text-info">ID:</label><br>
 	                            <input type="text" name="userId" id="userId" class="form-control">
@@ -17,7 +19,7 @@
 	                            <input type="password" name="userPw" id="userPw" class="form-control">
 	                        </div>
 	                        <div class="form-group row justify-content-center align-items-center">
-	                            <input type="submit" name="submit" class="btn btn-info btn-lg" value="submit">
+	                            <input type="submit" name="submit" class="btn btn-info btn-lg" value="LOGIN">
 	                        </div>
 	                    </form>
 	                </div>
@@ -40,7 +42,7 @@
 			url : "/bbs/loginProc",
 			data : {userId : userId ,userPw : userPw},
 			success:function(data){
-				if(data.result) location.href="/bbs/main"
+				if(data.result) location.href="/bbs/workbbs"
 			},
 		})
 	}

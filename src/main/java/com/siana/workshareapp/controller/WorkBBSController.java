@@ -15,6 +15,7 @@ import com.siana.workshareapp.common.controller.BaseController;
 import com.siana.workshareapp.common.exception.FileException;
 import com.siana.workshareapp.common.service.CommonService;
 import com.siana.workshareapp.common.vo.ResultMap;
+import com.siana.workshareapp.service.CommentService;
 import com.siana.workshareapp.service.WorkBBSService;
 
 @Controller
@@ -25,6 +26,9 @@ public class WorkBBSController extends BaseController{
 
 	@Autowired
 	private CommonService commonService;
+
+	@Autowired
+	private CommentService commentService;
 
 	/*********[get Page]********************************************************************/
 	/**
@@ -133,9 +137,44 @@ public class WorkBBSController extends BaseController{
 	 */
 	@RequestMapping("/bbs/workbbsWriteProc")
 	@ResponseBody
-	public Map workbbsWriteProc(MultipartHttpServletRequest request , HttpServletResponse response) throws FileException {
+	public ResultMap workbbsWriteProc(MultipartHttpServletRequest request , HttpServletResponse response) throws FileException {
 		Map paramMap = super.getParamMap(request);
-		workBBSService.insertWorkBBS(paramMap);
-		return paramMap;
+		return new ResultMap(workBBSService.insertWorkBBS(paramMap));
+	}
+
+	/**
+	 * NAME : updateStatus
+	 * DESC : 게시물 상태 업데이트
+	 * DATE : 2020. 7. 8.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * </pre>
+	 */
+	@RequestMapping("/bbs/updateStatus")
+	@ResponseBody
+	public ResultMap updateStatus(HttpServletRequest request , HttpServletResponse response) {
+		Map params = super.getParamMap(request);
+		return new ResultMap(workBBSService.updateBBSStatus(params));
+	}
+
+	/**
+	 * NAME : registComment
+	 * DESC : 게시물 코멘트 등록
+	 * DATE : 2020. 7. 8.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * </pre>
+	 */
+	@RequestMapping("/bbs/registComment")
+	@ResponseBody
+	public ResultMap registComment(HttpServletRequest request , HttpServletResponse response) {
+		Map params = super.getParamMap(request);
+		return new ResultMap(commentService.insertComment(params));
 	}
 }

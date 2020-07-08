@@ -4,19 +4,19 @@
 
 	<select id="getWorkBBSDetail" parameterType="Map" resultType="Map">
 		SELECT /*[WorkBBSService.getWorkBBSDetail] 업무 게시판 상세조회*/
-			   BBS_ID      AS bbsId
-			 , BBS_TITLE   AS bbsTitle
-			 , BBS_DESC    AS bbsDesc
-			 , BBS_STATUS  AS bbsStatusCd
+			   BBS.BBS_ID      AS bbsId
+			 , BBS.BBS_TITLE   AS bbsTitle
+			 , BBS.BBS_DESC    AS bbsDesc
+			 , BBS.BBS_STATUS  AS bbsStatusCd
 			 , CD.COMM_NM  AS bbsStatus
-			 , (SELECT COMM_NM FROM API_COMM_CD CD2 WHERE CD2.GRP_CD = '2000' AND COMM_CD = BBS_TARGET ) AS bbsTarget
-			 , ETC         AS etc
-			 , (SELECT USER_NAME FROM TMP_USER WHERE USER_ID = BBS.REG_ID) AS regNm
-			 , (SELECT USER_NAME FROM TMP_USER WHERE USER_ID = BBS.UPD_ID) AS updNm
-			 , DATE_FORMAT(REG_DTM,'%Y-%m-%d') AS regDtm
-			 , DATE_FORMAT(UPD_DTM,'%Y-%m-%d') AS updDtm
-		  FROM TMP_BBS BBS
-		     , API_COMM_CD CD
+			 , (SELECT COMM_NM FROM HMP_COMM_CD CD2 WHERE CD2.GRP_CD = '2000' AND COMM_CD = WORK_TARGET ) AS workTarget
+			 , BBS.ETC         AS etc
+			 , (SELECT USER_NAME FROM HMP_USER WHERE USER_ID = BBS.REG_ID) AS regNm
+			 , (SELECT USER_NAME FROM HMP_USER WHERE USER_ID = BBS.UPD_ID) AS updNm
+			 , DATE_FORMAT(BBS.REG_DTM,'%Y-%m-%d') AS regDtm
+			 , DATE_FORMAT(BBS.UPD_DTM,'%Y-%m-%d') AS updDtm
+		  FROM HMP_WORK_BBS BBS
+		     , HMP_COMM_CD CD
 		 WHERE BBS.BBS_STATUS = CD.COMM_CD
 		   AND CD.GRP_CD = '1000'
 		   AND BBS.USE_YN = 'Y'
@@ -25,64 +25,64 @@
 
 	<select id="getWorkBBSList" parameterType="Map" resultType="Map">
 		SELECT /*[WorkBBSService.getWorkBBSList] 업무 게시판 목록조회*/
-			   BBS_ID      AS bbsId
-			 , BBS_TITLE   AS bbsTitle
-			 , BBS_DESC    AS bbsDesc
+			   BBS.BBS_ID      AS bbsId
+			 , BBS.BBS_TITLE   AS bbsTitle
+			 , BBS.BBS_DESC    AS bbsDesc
 			 , CD.COMM_NM  AS bbsStatus
-			 , ETC         AS etc
-			 , DATE_FORMAT(REG_DTM,'%Y-%m-%d') AS regDtm
-			 , DATE_FORMAT(UPD_DTM,'%Y-%m-%d') AS updDtm
-			 , (SELECT USER_NAME FROM TMP_USER WHERE USER_ID = BBS.REG_ID) AS regNm
-			 , (SELECT USER_NAME FROM TMP_USER WHERE USER_ID = BBS.UPD_ID) AS updNm
-		  FROM TMP_BBS BBS
-		     , API_COMM_CD CD
+			 , DATE_FORMAT(BBS.REG_DTM,'%Y-%m-%d') AS regDtm
+			 , DATE_FORMAT(BBS.UPD_DTM,'%Y-%m-%d') AS updDtm
+			 , (SELECT USER_NAME FROM HMP_USER WHERE USER_ID = BBS.REG_ID) AS regNm
+			 , (SELECT USER_NAME FROM HMP_USER WHERE USER_ID = BBS.UPD_ID) AS updNm
+		  FROM HMP_WORK_BBS BBS
+		     , HMP_COMM_CD CD
 		 WHERE BBS.BBS_STATUS = CD.COMM_CD
 		   AND CD.GRP_CD = '1000'
 		   AND BBS.USE_YN = 'Y'
+		   ORDER BY BBS.REG_DTM DESC
 		 LIMIT #{pageInfo.startIndex}, #{pageInfo.pageSize}
 	</select>
 	<select id="getWorkBBSTotCnt" parameterType="Map" resultType="int">
 		SELECT /*[WorkBBSService.getWorkBBSList] 업무 게시판 상세 조회*/
 			   COUNT(*) AS totCnt
-		  FROM TMP_BBS
+		  FROM HMP_WORK_BBS
 		 WHERE USE_YN = 'Y'
 	</select>
 
 	<insert id="insertWorkBBS" parameterType="Map" useGeneratedKeys="true" keyProperty="bbsId">
 		INSERT /*[WorkBBSService.insertWorkBBS] 업무 게시판 등록*/
-		  INTO TMP_BBS (
+		  INTO HMP_WORK_BBS (
 		       BBS_TITLE
 			 , BBS_DESC
-			 , BBS_TARGET
+			 , WORK_TARGET
 			 , REG_ID
-			 , REG_DTM
 			 , UPD_ID
+			 , REG_DTM
 			 , UPD_DTM
 		  )  VALUES (
 		       #{title}
 		     , #{desc}
-		     , #{bbsTarget}
+		     , #{workTarget}
+		     , #{session.userId}
 		     , #{session.userId}
 		     , NOW()
-		     , #{session.userId}
 		     , NOW()
 		  )
 	</insert>
 
 	<update id="updateBBSStatus" parameterType="Map">
 		UPDATE /*[WorkBBSService.updateBBSStatus] 게시판 상태 수정*/
-		TMP_BBS SET BBS_STATUS = #{bbsStatus}
+		HMP_WORK_BBS SET BBS_STATUS = #{bbsStatus}
 		WHERE BBS_ID = #{bbsId}
 	</update>
 
 	<insert id="insertBBSHistory">
 		INSERT /*[WorkBBSService.insertBBSHistory] 게시판 수정 이력 등록*/
-		INTO TMP_BBS_HIST (
+		INTO HMP_WORK_BBS_HIST (
 			 BBS_ID
 			,BBS_TITLE
 			,BBS_DESC
 			,BBS_STATUS
-			,BBS_TARGET
+			,WORK_TARGET
 			,ETC
 			,REQ_DTM
 			,RES_DTM
@@ -95,7 +95,7 @@
 				,BBS_TITLE
 				,BBS_DESC
 				,BBS_STATUS
-				,BBS_TARGET
+				,WORK_TARGET
 				,#{etc} ETC
 				,REQ_DTM
 				,RES_DTM
@@ -104,7 +104,7 @@
 				,REG_DTM
 				,UPD_ID
 				,UPD_DTM
-		   FROM TMP_BBS
+		   FROM HMP_WORK_BBS
 		  WHERE BBS_ID = #{bbsId}
 	</insert>
 

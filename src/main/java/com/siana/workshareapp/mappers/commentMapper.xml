@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommentService">
+	<select id="selectComment" parameterType="Map" resultType="Map">
+		SELECT /* [CommentService.selectComment] 코멘트 조회 */
+		       COMMENT_ID AS commentId
+		     , COMMENT    AS comment
+		     , ETC        AS etc
+		     , REG_ID     AS regId
+		     , (SELECT USER_NAME FROM HMP_USER WHERE USER_ID = C.REG_ID) AS regNm
+		     , DATE_FORMAT(REG_DTM,'%Y-%m-%d') AS regDtm
+		  FROM HMP_BBS_COMMENT C
+		 WHERE BBS_ID = #{bbsId}
+		   AND USE_YN = 'Y'
+		 ORDER BY REG_DTM DESC
+	</select>
+	<insert id="insertComment" parameterType="Map">
+		INSERT /*[CommentService.insertComment] 코멘트 등록*/
+		  INTO HMP_BBS_COMMENT
+		      (  BBS_ID
+				,COMMENT
+				,REG_ID
+				,UPD_ID
+				,REG_DTM
+				,UPD_DTM
+			  )
+		VALUES( #{bbsId}
+		       ,#{comment}
+		       ,#{session.userId}
+		       ,#{session.userId}
+		       ,NOW()
+		       ,NOW()
+		      )
+	</insert>
+</mapper>

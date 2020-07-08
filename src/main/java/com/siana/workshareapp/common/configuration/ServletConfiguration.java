@@ -9,11 +9,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
+import com.siana.workshareapp.common.utils.FileDownload;
 import com.siana.workshareapp.common.utils.Interceptor;
 
 
@@ -23,6 +25,8 @@ import com.siana.workshareapp.common.utils.Interceptor;
 @EnableAsync // @Async 어노테이션을 사용하기 위함
 @ComponentScan(basePackages="com.siana.workshareapp", excludeFilters=@ComponentScan.Filter(Configuration.class))
 public class ServletConfiguration extends WebMvcConfigurerAdapter{
+
+
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -65,5 +69,17 @@ public class ServletConfiguration extends WebMvcConfigurerAdapter{
     	.addPathPatterns("/bbs/**");
 //    	.excludePathPatterns("/bbs/login*");
     }
+    /* FILE DOWNLOAD */
+    @Bean
+	public BeanNameViewResolver beanNameViewResolver() {
+		BeanNameViewResolver beanNameViewResolver = new BeanNameViewResolver();
+		beanNameViewResolver.setOrder(0);
+		return beanNameViewResolver;
+	}
+
+	@Bean
+	public FileDownload download() {
+		return new FileDownload();
+	}
 }
 

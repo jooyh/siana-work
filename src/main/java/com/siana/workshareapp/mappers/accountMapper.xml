@@ -6,12 +6,11 @@
 		SELECT /* [AccountService.login] 사용자 로그인 */
 		        USER_ID        AS userId
 				,USER_EMAIL     AS userEmail
-				,USER_PW        AS userPw
 				,USER_NAME      AS userName
 				,COMPANY_CODE   AS companyCode
 				,STATUS         AS status
 				,USE_YN         AS useYn
-           FROM TMP_USER
+           FROM HMP_USER
           WHERE USE_YN = 'Y'
             AND USER_ID = #{userId}
             AND USER_PW = #{userPw}
@@ -19,7 +18,7 @@
 
 	<insert id="registUser" parameterType="Map">
 		INSERT /* [AccountService.registUser] 사용자 등록 */
-		INTO TMP_USER (
+		INTO HMP_USER (
 				USER_ID
 				,USER_EMAIL
 				,USER_PW
@@ -44,7 +43,7 @@
 
 	<update id="updateUser" parameterType="Map">
 		UPDATE /* [AccountService.updateUser] 사용자 수정 */
-		TMP_USER SET
+		HMP_USER SET
 		 UPD_ID       = #{session.userId}
 		,UPD_DTM      = NOW()
 		<if test="userPw != null userPw != ''">
