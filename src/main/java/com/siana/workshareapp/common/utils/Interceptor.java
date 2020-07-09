@@ -19,9 +19,9 @@ public class Interceptor extends HandlerInterceptorAdapter{
 			throws Exception {
 		String uri = request.getRequestURI();
 
-		if(!uri.contains("/bbs/login")) {
+		if(!uri.contains("/servlet/bbs/login")) {
 			if(request.getSession().getAttribute(ADM_SESSION_KEY) == null) {
-				response.sendRedirect("/bbs/login");
+				response.sendRedirect("/servlet/bbs/login");
 			}
 		}
 		logger.debug("===================       START       ===================");

@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="/resources/static/css/main.css" media="all">
-<link rel="stylesheet" type="text/css" href="/resources/static/lib/slick.css" />
-<script type="text/javascript" src="/resources/static/lib/slick.min.js"></script>
+<script type="text/javascript" src="/resources/static/lib/jquery-1.10.2.js"></script>
 <script
   type="text/javascript"
   src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8af929032ee6b7d4a33b27735eb565fa"
@@ -83,16 +82,16 @@
 
     <script>
     var cnt = 0;
+    $(function(){
+    	fn_pageInit()
+    })
       function fn_pageInit(){
-    	  setKakaoMap()
+     	  setKakaoMap()
           bindEvent()
 	   	  setInterval(function(){
 			cnt = 0;
 		  }, 3000);
       }
-
-
-
 
       var map, center
       function setKakaoMap(isFirst) {
@@ -125,12 +124,11 @@
         })
         $(".navi li").eq(0).click()
 
-        $("section").click(function(){
-	   		console.log("TEST",cnt);
+        $("address").click(function(){
 	   		cnt++;
 	   		if(cnt == 5){
-	   			location.href="/bbs/login";
+	   			location.href="/servlet/bbs/login";
 	   		}
-	   	  })
+	   	})
       }
     </script>
