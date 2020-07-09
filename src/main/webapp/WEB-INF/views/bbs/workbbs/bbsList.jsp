@@ -41,49 +41,51 @@
     <div class="pagenation-container"></div>
 </div>
 <script>
-	function fn_pageInit(){
-		gfn_getCommCd("1000",function(res){
-			var commCd = res.result;
-			var html = "<option value=''>전체</option>";
-			for(var i in commCd){
-				html+= "<option value='"+commCd[i].commCd+"'>"+commCd[i].commNm+"</option>"
-			}
-			$("#bbsStatus").append(html)
-		});
-		fn_getBBSList(0);
-	}
+var params = gfn_getQueryParam();
 
-	function fn_getBBSList(){
-		var params = gfn_getQueryParam();
-		params.bbsStatus = $("#bbsStatus").val();
-		gfn_fetch.post({
-			url : "/servlet/bbs/getWorkbbsList",
-			data : params,
-			success : function(res){
-				new Pagenation("/servlet/bbs/workbbs",res.result.pageInfo,params)
-				var html = "";
-				for(var i in res.result.datas){
-					var bbs = res.result.datas[i];
-					html+="<tr onclick='location.href=\"/servlet/bbs/workbbsDetail?bbsId="+bbs.bbsId+"\"'>";
-					html+="<td>"+bbs.bbsId+"</td>";
-					html+="<td>"+bbs.bbsTitle+"</td>";
-					html+="<td>"+bbs.regNm+"</td>";
-					html+="<td>"+bbs.regDtm+"</td>";
-					html+="<td>"+bbs.updNm+"</td>";
-					html+="<td>"+bbs.updDtm+"</td>";
-					html+="<td>"+bbs.bbsStatus+"</td>";
-					html+="</tr>";
-				}
-				if(!html.length) html = "<tr><td colspan=7> 데이터가 없습니다. </td></tr>"
-				$("#tbl-work tbody").empty().append(html);
-			}
-		})
-	}
-
-	$("#bbsStatus").on("change",function(){
-		fn_getBBSList();
-	})
-	$("#btn-regist").click(function(){
-		location.href= "/servlet/bbs/workbbsWrite";
+function fn_pageInit(){
+	gfn_getCommCd("1000",function(res){
+		var commCd = res.result;
+		var html = "<option value=''>전체</option>";
+		for(var i in commCd){
+			html+= "<option value='"+commCd[i].commCd+"'>"+commCd[i].commNm+"</option>"
+		}
+		$("#bbsStatus").append(html).val(params.bbsStatus)
 	});
+	fn_getBBSList(0);
+}
+
+function fn_getBBSList(){
+	gfn_fetch.post({
+		url : "/servlet/bbs/getWorkbbsList",
+		data : params,
+		success : function(res){
+			new Pagenation("/servlet/bbs/workbbs",res.result.pageInfo,params)
+			var html = "";
+			for(var i in res.result.datas){
+				var bbs = res.result.datas[i];
+				html+="<tr onclick='location.href=\"/servlet/bbs/workbbsDetail?bbsId="+bbs.bbsId+"\"'>";
+				html+="<td>"+bbs.bbsId+"</td>";
+				html+="<td>"+bbs.bbsTitle+"</td>";
+				html+="<td>"+bbs.regNm+"</td>";
+				html+="<td>"+bbs.regDtm+"</td>";
+				html+="<td>"+bbs.updNm+"</td>";
+				html+="<td>"+bbs.updDtm+"</td>";
+				html+="<td>"+bbs.bbsStatus+"</td>";
+				html+="</tr>";
+			}
+			if(!html.length) html = "<tr><td colspan=7> 데이터가 없습니다. </td></tr>"
+			$("#tbl-work tbody").empty().append(html);
+		}
+	})
+}
+
+$("#bbsStatus").on("change",function(){
+	params.page = 1;
+	params.bbsStatus = event.target.value;
+	location.href = location.pathname+gfn_setQueryParam(params);
+})
+$("#btn-regist").click(function(){
+	location.href= "/servlet/bbs/workbbsWrite";
+});
 </script>

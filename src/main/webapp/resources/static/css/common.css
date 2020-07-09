@@ -65,7 +65,7 @@ li {list-style:none}
 	border: 1px solid #ccc;
 	border-radius:15px;
 }
-
+.btn{padding:.375rem .75rem;}
 .sidebar .sidebar-wrapper {background:#151b54;}
 .comment-container ul li:not(:first-child) {padding:15px 0;border-top:1px solid #efefef;}
 .comment-container ul li {padding-bottom:15px;}

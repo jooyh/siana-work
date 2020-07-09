@@ -60,6 +60,20 @@ public class AccountController extends BaseController{
 	}
 
 	/**
+	 * NAME : userListPage
+	 * DESC : 사용자 목록페이지 이동
+	 * DATE : 2020. 7. 9.
+	 * <pre>
+	 * @auther jyh
+	 * @return
+	 * </pre>
+	 */
+	@RequestMapping("userList")
+	public String userListPage() {
+		return "account/userList.part";
+	}
+
+	/**
 	 * NAME : updateUserPage
 	 * DESC : 사용자 수정 페이지
 	 * DATE : 2020. 7. 3.
@@ -70,7 +84,7 @@ public class AccountController extends BaseController{
 	 */
 	@RequestMapping("updateUser")
 	public String updateUserPage() {
-		return "account/updateUser.part";
+		return "account/registUser.part";
 	}
 
 	/******[ Data Actions ]**************************************************************************************/
@@ -107,6 +121,24 @@ public class AccountController extends BaseController{
 	@ResponseBody
 	public ResultMap checkUserId (HttpServletRequest request , HttpServletResponse response) {
 		return new ResultMap(accountService.duplicatedCheckUserId(super.getParamMap(request)));
+	}
+
+	@RequestMapping("getUserList")
+	@ResponseBody
+	public ResultMap getUserList(HttpServletRequest request , HttpServletResponse response) {
+		return new ResultMap(accountService.selectUserList(super.getParamMap(request)));
+	}
+
+	@RequestMapping("getUserInfo")
+	@ResponseBody
+	public ResultMap getUserInfo(HttpServletRequest request , HttpServletResponse response) {
+		return new ResultMap(accountService.selectUserInfo(super.getParamMap(request)));
+	}
+
+	@RequestMapping("updateUserProc")
+	@ResponseBody
+	public ResultMap updateUserProc(HttpServletRequest request , HttpServletResponse response) {
+		return new ResultMap(accountService.updateUser(super.getParamMap(request)));
 	}
 
 }

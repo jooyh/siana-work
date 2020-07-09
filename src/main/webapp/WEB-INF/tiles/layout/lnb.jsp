@@ -31,7 +31,7 @@
 	var menuList = [
 		{url : "/servlet/bbs/workbbs" , menuNm : "업무게시판" , menuCd : "1000"},
 		<c:if test="${sessionScope.userInfo.status eq 'A'}">
-		{url : "/servlet/bbs/registUser" , menuNm : "사용자등록" , menuCd : "2000"},
+		{url : "/servlet/bbs/userList" , menuNm : "사용자목록" , menuCd : "2000"},
 		</c:if>
 	]
 	var menuEl = "";
