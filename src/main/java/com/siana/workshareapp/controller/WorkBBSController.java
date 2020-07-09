@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.siana.workshareapp.common.controller.BaseController;
 import com.siana.workshareapp.common.exception.FileException;
-import com.siana.workshareapp.common.service.CommonService;
 import com.siana.workshareapp.common.vo.ResultMap;
 import com.siana.workshareapp.service.CommentService;
 import com.siana.workshareapp.service.WorkBBSService;
@@ -23,9 +22,6 @@ import com.siana.workshareapp.service.WorkBBSService;
 public class WorkBBSController extends BaseController{
 	@Autowired
 	private WorkBBSService workBBSService;
-
-	@Autowired
-	private CommonService commonService;
 
 	@Autowired
 	private CommentService commentService;
@@ -87,6 +83,20 @@ public class WorkBBSController extends BaseController{
 		return "bbs/workbbs/bbsWrite.part";
 	}
 
+	/**
+	 * NAME : workbbsModifyPage
+	 * DESC : 업무게시판 수정 페이지 이동
+	 * DATE : 2020. 7. 9.
+	 * <pre>
+	 * @auther jyh
+	 * @return
+	 * </pre>
+	 */
+	@RequestMapping("workbbsModify")
+	public String workbbsModifyPage() {
+		return "bbs/workbbs/bbsWrite.part";
+	}
+
 	/*********[get Data]********************************************************************/
 
 	/**
@@ -140,6 +150,44 @@ public class WorkBBSController extends BaseController{
 	public ResultMap workbbsWriteProc(MultipartHttpServletRequest request , HttpServletResponse response) throws FileException {
 		Map paramMap = super.getParamMap(request);
 		return new ResultMap(workBBSService.insertWorkBBS(paramMap));
+	}
+
+	/**
+	 * NAME : workbbsUpdateProc
+	 * DESC : 게시물 수정
+	 * DATE : 2020. 7. 9.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws FileException
+	 * </pre>
+	 */
+	@RequestMapping("workbbsUpdateProc")
+	@ResponseBody
+	public ResultMap workbbsUpdateProc(MultipartHttpServletRequest request , HttpServletResponse response) throws FileException {
+		Map paramMap = super.getParamMap(request);
+		return new ResultMap(workBBSService.updateBBS(paramMap));
+	}
+
+	/**
+	 * NAME : workbbsDeleteProc
+	 * DESC : 게시물 삭제
+	 * DATE : 2020. 7. 9.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws FileException
+	 * </pre>
+	 */
+	@RequestMapping("workbbsDeleteProc")
+	@ResponseBody
+	public ResultMap workbbsDeleteProc(HttpServletRequest request , HttpServletResponse response) throws FileException {
+		Map paramMap = super.getParamMap(request);
+		return new ResultMap(workBBSService.deleteBBS(paramMap));
 	}
 
 	/**

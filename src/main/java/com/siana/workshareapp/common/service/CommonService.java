@@ -45,9 +45,34 @@ public class CommonService extends BaseService{
 	}
 
 
+	/**
+	 * NAME : selectFiles
+	 * DESC :
+	 * DATE : 2020. 7. 9.
+	 * <pre>
+	 * @auther jyh
+	 * @param params
+	 * @return
+	 * </pre>
+	 */
 	public List selectFiles(Map params) {
 		String statement = super.getStatement(this.getClass().getSimpleName(), "selectFiles");
 		return sqlsession.selectList(statement,params);
+	}
+
+	/**
+	 * NAME : deleteFile
+	 * DESC : 파일 삭제
+	 * DATE : 2020. 7. 9.
+	 * <pre>
+	 * @auther jyh
+	 * @param params
+	 * @return
+	 * </pre>
+	 */
+	public boolean deleteFile(Map params) {
+		String statement = super.getStatement(this.getClass().getSimpleName(), "deleteFile");
+		return sqlsession.update(statement,params) == 1;
 	}
 
 }

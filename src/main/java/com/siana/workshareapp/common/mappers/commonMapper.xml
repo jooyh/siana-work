@@ -34,12 +34,20 @@
 		  )
 	</insert>
 
+	<update id="deleteFile" parameterType="Map">
+		UPDATE /*[CommonService.insertFile] 파일 정보 삭제*/
+		HMP_ATCH_FILE SET USE_YN = 'N'
+		 WHERE BBS_ID = #{bbsId}
+		   AND FILE_ID = #{fileId}
+	</update>
+
 	<select id="selectFiles" parameterType="Map" resultType="Map">
 		SELECT /*[CommonService.selectFiles] 파일 정보 조회*/
 				FILE_SNM  AS fileSnm
 			 ,  FILE_ONM  AS fileOnm
 			 ,  FILE_PATH AS filePath
 		  FROM  HMP_ATCH_FILE
-		 WHERE  BBS_ID = #{bbsId}
+		 WHERE  USE_YN = 'Y'
+		   AND  BBS_ID = #{bbsId}
 	</select>
 </mapper>

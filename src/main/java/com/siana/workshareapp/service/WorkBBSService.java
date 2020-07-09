@@ -116,8 +116,74 @@ public class WorkBBSService extends BaseService{
 		return sqlSession.update(statement,param) > 0;
 	}
 
+	/**
+	 * NAME : selectBBSHistList
+	 * DESC : 게시판 이력 목록 조회
+	 * DATE : 2020. 7. 9.
+	 * <pre>
+	 * @auther jyh
+	 * @param param
+	 * @return
+	 * </pre>
+	 */
 	public List selectBBSHistList(Map param) {
 		String statement = super.getStatement(this.getClass().getSimpleName(),"selectBBSHistList");
 		return sqlSession.selectList(statement,param);
+	}
+
+	/**
+	 * NAME : deleteBBS
+	 * DESC : 게시물 삭제
+	 * DATE : 2020. 7. 9.
+	 * <pre>
+	 * @auther jyh
+	 * @param param
+	 * @return
+	 * </pre>
+	 */
+	public boolean deleteBBS(Map param) {
+		String statementForHist = super.getStatement(this.getClass().getSimpleName(),"insertBBSHistory");
+		sqlSession.insert(statementForHist,param);
+		String statement = super.getStatement(this.getClass().getSimpleName(),"deleteBBS");
+		return sqlSession.update(statement,param) > 0;
+	}
+
+	/**
+	 * NAME : updateBBS
+	 * DESC : 게시물 수정
+	 * DATE : 2020. 7. 7.
+	 * <pre>
+	 * @auther jyh
+	 * @param params
+	 * @return
+	 * @throws FileException
+	 * </pre>
+	 */
+	public boolean updateBBS(Map params) throws FileException {
+
+		String statementForHist = super.getStatement(this.getClass().getSimpleName(),"insertBBSHistory");
+		sqlSession.insert(statementForHist,params);
+
+		String statement = super.getStatement(this.getClass().getSimpleName(),"updateBBS");
+		if(params.get("deletedFiles") != null || params.get("files") != null) {
+			params.put("etc","파일변경");
+		}
+		boolean updateFlag = sqlSession.update(statement,params) > 0;
+
+		if(updateFlag) {
+			List<Map> deletedFiles = (List) params.get("deletedFiles");
+			List<Map> files = (List) params.get("files");
+			for(Map file : deletedFiles) {
+				file.put("session",params.get("session"));
+				file.put("bbsId",params.get("bbsId"));
+				if(commonService.deleteFile(file)) throw new FileException("파일정보 삭제 중 오류가 발생했습니다.");
+			}
+			for(Map file : files) {
+				file.put("session",params.get("session"));
+				file.put("bbsId",params.get("bbsId"));
+				if(commonService.insertFile(file)) throw new FileException("파일정보 저장중 오류가 발생하였습니다.");
+			}
+		}
+		return updateFlag;
 	}
 }

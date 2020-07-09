@@ -48,6 +48,9 @@
 		SELECT /*[WorkBBSService.getWorkBBSList] 업무 게시판 상세 조회*/
 			   COUNT(*) AS totCnt
 		  FROM HMP_WORK_BBS
+		  <if test="bbsStatus != null and bbsStatus != '' ">
+		   AND BBS_STATUS = #{bbsStatus}
+		   </if>
 		 WHERE USE_YN = 'Y'
 	</select>
 
@@ -76,6 +79,27 @@
 		UPDATE /*[WorkBBSService.updateBBSStatus] 게시판 상태 수정*/
 		HMP_WORK_BBS SET
 		 BBS_STATUS  = #{bbsStatus}
+		,UPD_ID      = #{session.userId}
+		,UPD_DTM     = NOW()
+		WHERE BBS_ID = #{bbsId}
+	</update>
+
+	<update id="updateBBS" parameterType="Map">
+		UPDATE /*[WorkBBSService.updateBBS] 게시판 수정*/
+		HMP_WORK_BBS SET
+		  BBS_TITLE   = #{bbsTitle}
+		, BBS_DESC    = #{bbsDesc}
+		, WORK_TARGET = #{workTarget}
+		, UPD_ID      = #{session.userId}
+		, ETC         = #{etc}
+		, UPD_DTM     = NOW()
+		WHERE BBS_ID = #{bbsId}
+	</update>
+
+	<update id="deleteBBS" parameterType="Map">
+		UPDATE /*[WorkBBSService.deleteBBS] 게시판 삭제*/
+		HMP_WORK_BBS SET
+		 USE_YN      = 'N'
 		,UPD_ID      = #{session.userId}
 		,UPD_DTM     = NOW()
 		WHERE BBS_ID = #{bbsId}
