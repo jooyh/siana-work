@@ -16,10 +16,17 @@
             AND USER_PW = #{userPw}
 	</select>
 
+	<select id="duplicatedCheckUserId" resultType="int" parameterType="Map">
+		SELECT /* [AccountService.duplicatedCheckUserId] 아이디 중복 체크*/
+			   COUNT(*) AS cnt
+		  FROM HMP_USER
+		 WHERE USER_ID = #{userId}
+	</select>
+
 	<insert id="registUser" parameterType="Map">
 		INSERT /* [AccountService.registUser] 사용자 등록 */
 		INTO HMP_USER (
-				USER_ID
+				 USER_ID
 				,USER_EMAIL
 				,USER_PW
 				,USER_NAME
@@ -28,8 +35,8 @@
 				,REG_DTM
 				,UPD_ID
 				,UPD_DTM
-		)VALUSE(
-				#{userId}}
+		)VALUES(
+				 #{userId}
 				,#{userEmail}
 				,#{userPw}
 				,#{userName}

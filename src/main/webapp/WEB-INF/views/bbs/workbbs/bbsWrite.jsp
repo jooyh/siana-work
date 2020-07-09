@@ -66,7 +66,6 @@ function fn_pageInit(){
 	gfn_initTextEditor("desc")
 	gfn_getCommCd("2000",function(res){
 		var commCd = res.result;
-		console.log(commCd);
 		var html = "<option value=''>전체</option>";
 		for(var i in commCd){
 			html+= "<option value='"+commCd[i].commCd+"'>"+commCd[i].commNm+"</option>"

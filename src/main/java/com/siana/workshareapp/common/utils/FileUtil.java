@@ -58,11 +58,12 @@ public class FileUtil {
 			for(MultipartFile mf : request.getFiles(inputNm)) {
 				int pos = mf.getOriginalFilename().lastIndexOf( "." ); // 마지막 . 의 위치
 				String ext = mf.getOriginalFilename().substring( pos + 1 ); // 확장자
-				File file = new File(path+ new File("").separator + getFileNm() + "." + ext);
+				File file = new File(contextPath+path+getFileNm() + "." + ext);
 
 				while(file.exists()) {
-					file = new File(path+ new File("").separator + getFileNm() + "." + ext);
+					file = new File(contextPath+path+getFileNm() + "." + ext);
 				}
+
 				try {
 					mf.transferTo(file);
 				} catch (IllegalStateException e) {
@@ -72,7 +73,7 @@ public class FileUtil {
 					e.printStackTrace();
 					throw new FileException("파일생성 중 오류가 발생했습니다.");
 				}
-				Map fileMap = getFileMap(file,mf.getOriginalFilename(),inputNm);
+				Map fileMap = getFileMap(file,mf.getOriginalFilename(),inputNm,path);
 				uploadedFileList.add(fileMap);
 //				uploadedFileList.add(new FileVO(inputNm, mf.getOriginalFilename(), file.getName(), file.getPath(), mf.getSize()));
 			}
@@ -93,12 +94,12 @@ public class FileUtil {
 	 * @return fileMap
 	 * </pre>
 	 */
-	private Map getFileMap(File file,String oNm,String elNm) {
+	private Map getFileMap(File file,String oNm,String elNm ,String path) {
 		Map fileMap = new HashMap();
 		fileMap.put("elNm",elNm);
 		fileMap.put("oNm",oNm);
 		fileMap.put("sNm",file.getName());
-		fileMap.put("path",file.getPath());
+		fileMap.put("path",path);
 		logger.debug("fileMap ::>" , fileMap.toString());
 		return fileMap;
 	}
@@ -132,7 +133,7 @@ public class FileUtil {
 		String dirNm = format.format(now);
 		File dir = new File(contextPath+uploadBaseDir+dirNm);
 		if(!dir.exists()) dir.mkdirs();
-		return dir.getPath();
+		return uploadBaseDir+dirNm+new File("").separator;
 	}
 
 	/**

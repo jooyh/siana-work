@@ -5,6 +5,7 @@ import java.io.File;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,8 @@ public class CommonController extends BaseController{
 	@Autowired
 	private CommonService commonService;
 
+	@Value("${file.uploadBaseDir}")
+	private String uploadBaseDir;
 
 
 	/**
@@ -42,8 +45,20 @@ public class CommonController extends BaseController{
 
 
 	@RequestMapping(value="/fileDownload", method = RequestMethod.GET)
-	public ModelAndView download(@RequestParam("path")String path) {
-		File file = new File(path);
-		return new ModelAndView("download", "downloadFile", file);
+	public ModelAndView download(HttpServletRequest request,
+			@RequestParam("path")String path
+			,@RequestParam("snm") String sNm
+			,@RequestParam("onm") String oNm) {
+
+		String contextPath = request.getSession().getServletContext().getRealPath("/");
+
+		File file = new File(contextPath+path+sNm);
+		File rFile = new File(contextPath+path+oNm);
+
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("download");
+		mav.addObject("downloadFile",file);
+		mav.addObject("realFileName",rFile);
+		return mav;
 	}
 }

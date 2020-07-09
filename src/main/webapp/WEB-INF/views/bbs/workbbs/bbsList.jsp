@@ -5,9 +5,14 @@
     <div class="card">
         <div class="card-header ">
 			<div class="row">
-				<div class="col-md-10">
+				<div class="col-md-8">
 		            <h4 class="card-title">업무 목록</h4>
 				</div>
+				<div class="col-md-2">
+                     <div class="form-group">
+                         <select class="form-control" name="bbsStatus" id="bbsStatus"></select>
+                     </div>
+                 </div>
 				<div class="col-md-2">
 		            <button type="button" class="btn btn-info" id="btn-regist">업무 등록</button>
 				</div>
@@ -37,16 +42,24 @@
 </div>
 <script>
 	function fn_pageInit(){
+		gfn_getCommCd("1000",function(res){
+			var commCd = res.result;
+			var html = "<option value=''>전체</option>";
+			for(var i in commCd){
+				html+= "<option value='"+commCd[i].commCd+"'>"+commCd[i].commNm+"</option>"
+			}
+			$("#bbsStatus").append(html)
+		});
 		fn_getBBSList(0);
 	}
 
 	function fn_getBBSList(){
 		var params = gfn_getQueryParam();
+		params.bbsStatus = $("#bbsStatus").val();
 		gfn_fetch.post({
 			url : "/servlet/bbs/getWorkbbsList",
 			data : params,
 			success : function(res){
-				console.log(res.result)
 				new Pagenation("/servlet/bbs/workbbs",res.result.pageInfo,params)
 				var html = "";
 				for(var i in res.result.datas){
@@ -67,6 +80,9 @@
 		})
 	}
 
+	$("#bbsStatus").on("change",function(){
+		fn_getBBSList();
+	})
 	$("#btn-regist").click(function(){
 		location.href= "/servlet/bbs/workbbsWrite";
 	});

@@ -30,7 +30,9 @@
 <script>
 	var menuList = [
 		{url : "/servlet/bbs/workbbs" , menuNm : "업무게시판" , menuCd : "1000"},
-		/* {url : "/bbs/workbbs" , menuNm : "업무게시판" , menuCd : "2000"}, */
+		<c:if test="${sessionScope.userInfo.status eq 'A'}">
+		{url : "/servlet/bbs/registUser" , menuNm : "사용자등록" , menuCd : "2000"},
+		</c:if>
 	]
 	var menuEl = "";
 	for(var i in menuList){

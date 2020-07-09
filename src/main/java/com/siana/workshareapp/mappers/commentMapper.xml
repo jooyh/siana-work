@@ -12,7 +12,7 @@
 		  FROM HMP_BBS_COMMENT C
 		 WHERE BBS_ID = #{bbsId}
 		   AND USE_YN = 'Y'
-		 ORDER BY REG_DTM DESC
+		 ORDER BY REG_DTM ASC
 	</select>
 	<insert id="insertComment" parameterType="Map">
 		INSERT /*[CommentService.insertComment] 코멘트 등록*/

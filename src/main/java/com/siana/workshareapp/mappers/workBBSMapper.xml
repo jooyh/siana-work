@@ -38,6 +38,9 @@
 		 WHERE BBS.BBS_STATUS = CD.COMM_CD
 		   AND CD.GRP_CD = '1000'
 		   AND BBS.USE_YN = 'Y'
+		   <if test="bbsStatus != null and bbsStatus != '' ">
+		   AND BBS_STATUS = #{bbsStatus}
+		   </if>
 		   ORDER BY BBS.REG_DTM DESC
 		 LIMIT #{pageInfo.startIndex}, #{pageInfo.pageSize}
 	</select>
@@ -71,11 +74,14 @@
 
 	<update id="updateBBSStatus" parameterType="Map">
 		UPDATE /*[WorkBBSService.updateBBSStatus] 게시판 상태 수정*/
-		HMP_WORK_BBS SET BBS_STATUS = #{bbsStatus}
+		HMP_WORK_BBS SET
+		 BBS_STATUS  = #{bbsStatus}
+		,UPD_ID      = #{session.userId}
+		,UPD_DTM     = NOW()
 		WHERE BBS_ID = #{bbsId}
 	</update>
 
-	<insert id="insertBBSHistory">
+	<insert id="insertBBSHistory" parameterType="Map">
 		INSERT /*[WorkBBSService.insertBBSHistory] 게시판 수정 이력 등록*/
 		INTO HMP_WORK_BBS_HIST (
 			 BBS_ID
@@ -84,8 +90,6 @@
 			,BBS_STATUS
 			,WORK_TARGET
 			,ETC
-			,REQ_DTM
-			,RES_DTM
 			,USE_YN
 			,REG_ID
 			,REG_DTM
@@ -97,8 +101,6 @@
 				,BBS_STATUS
 				,WORK_TARGET
 				,#{etc} ETC
-				,REQ_DTM
-				,RES_DTM
 				,USE_YN
 				,REG_ID
 				,REG_DTM
@@ -108,4 +110,13 @@
 		  WHERE BBS_ID = #{bbsId}
 	</insert>
 
+	<select id="selectBBSHistList" parameterType="Map" resultType="Map">
+		SELECT /* [WorkBBSService.selectBBSHistList] 업무 상태 변경 이력 조회 */
+		       B.BBS_STATUS AS bbsStatus
+		     , DATE_FORMAT(B.UPD_DTM,'%Y-%m-%d') AS updDate
+		     , (SELECT USER_NAME FROM HMP_USER WHERE USER_ID = B.UPD_ID) AS updNm
+		  FROM HMP_WORK_BBS_HIST B
+		 WHERE BBS_ID = #{bbsId}
+		 ORDER BY UPD_DTM ASC
+	</select>
 </mapper>

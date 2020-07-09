@@ -42,7 +42,7 @@ public class AccountService extends BaseService{
 
 	/**
 	 * NAME : registUser
-	 * DESC : 사용자 정보
+	 * DESC : 사용자 등록
 	 * DATE : 2020. 7. 3.
 	 * <pre>
 	 * @auther jyh
@@ -55,7 +55,7 @@ public class AccountService extends BaseService{
 		String orgPw = (String) params.get("userPw");
 		String encodedPw = encoder.encodePassword(orgPw, "SIANA");
 		params.put("userPw",encodedPw);
-		return sqlSession.insert(statement,params) > 1;
+		return sqlSession.insert(statement,params) > 0;
 	}
 
 	/**
@@ -75,7 +75,23 @@ public class AccountService extends BaseService{
 			String encodedPw = encoder.encodePassword(orgPw, "SIANA");
 			params.put("userPw",encodedPw);
 		}
-		return sqlSession.update(statement) > 1;
+		return sqlSession.update(statement) > 0;
+	}
+
+	/**
+	 * NAME : duplicatedCheckUserId
+	 * DESC : 사용자 아이디 중복 체크
+	 * DATE : 2020. 7. 9.
+	 * <pre>
+	 * @auther jyh
+	 * @param params
+	 * @return
+	 * </pre>
+	 */
+	public boolean duplicatedCheckUserId(Map params) {
+		String statement = super.getStatement(this.getClass().getSimpleName(),"duplicatedCheckUserId");
+		int cnt = sqlSession.selectOne(statement,params);
+		return cnt == 0;
 	}
 
 }

@@ -96,5 +96,17 @@ public class AccountController extends BaseController{
 		return new ResultMap(result);
 	}
 
+	@RequestMapping("registUserProc")
+	@ResponseBody
+	public ResultMap registUserProc(HttpServletRequest request , HttpServletResponse response) {
+		return new ResultMap(accountService.registUser(super.getParamMap(request)));
+	}
+
+
+	@RequestMapping("checkUserId")
+	@ResponseBody
+	public ResultMap checkUserId (HttpServletRequest request , HttpServletResponse response) {
+		return new ResultMap(accountService.duplicatedCheckUserId(super.getParamMap(request)));
+	}
 
 }

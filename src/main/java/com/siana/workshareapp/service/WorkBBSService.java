@@ -68,6 +68,7 @@ public class WorkBBSService extends BaseService{
 		Map data = sqlSession.selectOne(statement,params);
 		data.put("files",commonService.selectFiles(params));
 		data.put("comments",commentService.selectComment(params));
+		data.put("hist",this.selectBBSHistList(params));
 		return data;
 	}
 
@@ -98,8 +99,25 @@ public class WorkBBSService extends BaseService{
 		return insertFlag;
 	}
 
+	/**
+	 * NAME : updateBBSStatus
+	 * DESC : 게시물 상태변경
+	 * DATE : 2020. 7. 9.
+	 * <pre>
+	 * @auther jyh
+	 * @param param
+	 * @return
+	 * </pre>
+	 */
 	public boolean updateBBSStatus(Map param) {
+		String statementForHist = super.getStatement(this.getClass().getSimpleName(),"insertBBSHistory");
+		sqlSession.insert(statementForHist,param);
 		String statement = super.getStatement(this.getClass().getSimpleName(),"updateBBSStatus");
 		return sqlSession.update(statement,param) > 0;
+	}
+
+	public List selectBBSHistList(Map param) {
+		String statement = super.getStatement(this.getClass().getSimpleName(),"selectBBSHistList");
+		return sqlSession.selectList(statement,param);
 	}
 }

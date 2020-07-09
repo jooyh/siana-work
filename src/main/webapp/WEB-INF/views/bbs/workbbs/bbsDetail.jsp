@@ -20,18 +20,9 @@ ul{
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <!-- <h4 class="card-title">업무 상세</h4> -->
             <h4 id="title"></h4>
         </div>
         <div class="card-body">
-                <!-- <div class="row">
-                    <div class="col-md-12 pr-2">
-                        <div class="form-group">
-                            <label>제목</label>
-                            <p id="title"></p>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="row">
                     <div class="col-md-12 pr-2">
                     	<div class="form-group">
@@ -40,6 +31,7 @@ ul{
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -67,6 +59,13 @@ ul{
                     </div>
                     <div class="col-md-2 pr-15">
                     	<button type="button" onclick="fn_updateHandler()" class="btn btn-info float-right">수정</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 pr-1">
+                        <div class="form-group">
+                        	<label id="hist"></label>
+                        </div>
                     </div>
                 </div>
         </div>
@@ -103,11 +102,12 @@ ul{
     </div>
 </div>
 <script>
-	var orgData;
+	var orgData,statusCd=[];
 	function fn_pageInit(){
 		gfn_getCommCd("1000",function(res){
 			var html = "";
 			for(var i in res.result){
+				statusCd.push({commCd : res.result[i].commCd , commNm : res.result[i].commNm});
 				html += '<div class="custom-control custom-radio custom-control-inline">'
 				html +=   '<input type="radio" id="bbsStatus'+i+'"';
 				html +=   ' data-code="'+res.result[i].commCd+'"';
@@ -123,18 +123,17 @@ ul{
 
 	function fn_getDetailData(){
 		var param = gfn_getQueryParam();
-		console.log(param);
 		gfn_fetch.post({
 			url : "/servlet/bbs/getWorkbbsDetail",
 			data : param,
 			success : function(res){
-				console.log(res);
 				$("#title").text(res.result.bbsTitle);
 				$("#desc").html(res.result.bbsDesc);
 				$("#bbsTarget").text(res.result.bbsTarget ? res.result.bbsTarget : "전체");
 				$(".file-container").empty().append(fn_getFileElement(res.result.files));
 				$(".comment-container ul").empty().append(fn_getCommentElement(res.result.comments))
 				$("[name='bbsStatus']:input[value='"+res.result.bbsStatusCd+"']").attr("checked", true);
+				$("#hist").html(fn_getHistElement(res.result.hist))
 				orgData = res.result;
 			}
 		});
@@ -143,9 +142,16 @@ ul{
 	function fn_getFileElement(files){
 		var html = "";
 		for(var i=0; i<files.length; i++){
+			var urlParam = gfn_setQueryParam({
+				path:files[i].filePath ,
+				onm : files[i].fileOnm ,
+				snm : files[i].fileSnm
+			})
 			html += '<div class="file-wrap" data-title="'+files[i].fileOnm+'">';
 			html += '<div class="icon-text-box">';
-			html += '<a href="/servlet/bbs/fileDownload?path='+encodeURI(files[i].filePath)+'"';
+			html += '<a href="/servlet/bbs/fileDownload';
+			html += urlParam
+			html += '">';
 			html += '<p class="title detail">'+files[i].fileOnm+'</p>';
 			html += '</a>'
 			html += '</div>';
@@ -155,7 +161,6 @@ ul{
 	}
 
 	function fn_getCommentElement(comments){
-		console.log("TEST",comments);
 		var html = "";
 		for(var i=0; i<comments.length; i++){
 			html+='<li>';
@@ -170,9 +175,22 @@ ul{
 		return html;
 	}
 
+	function fn_getHistElement(hist){
+		var html = "";
+		for(var i in hist){
+			for(var j in statusCd){
+				if(hist[i].bbsStatus == statusCd[j].commCd){
+					html += " "+statusCd[j].commNm+" / "+hist[i].updNm
+					break;
+				}
+			}
+			html += " ("+hist[i].updDate+")&emsp;>&emsp;";
+		}
+		return html+="현재상태";
+	}
+
 	function fn_updateHandler(){
 		var bbsStatus = $("[name='bbsStatus']:checked").val();
-		console.log(bbsStatus);
 		if(orgData.bbsStatusCd == bbsStatus){
 			return alert("변경 내역이 없습니다.");
 		}

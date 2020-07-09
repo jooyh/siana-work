@@ -43,6 +43,7 @@
 			data : {userId : userId ,userPw : userPw},
 			success:function(data){
 				if(data.result) location.href="/servlet/bbs/workbbs"
+				else return alert("로그인에 실패 하였습니다.");
 			},
 		})
 	}

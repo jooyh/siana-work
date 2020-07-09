@@ -44,9 +44,10 @@ public class RootConfiguration {
 	private String password;
 
 	@Bean
-	@Order(1)
+	@Order(0)
 	public static final PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
+		ppc.setOrder(0);
 		ppc.setLocations(new Resource[] { new ClassPathResource(APP_CONFIG_FILE_PATH) });
 		return ppc;
 	}

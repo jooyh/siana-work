@@ -127,7 +127,7 @@ function gfn_setQueryParam(param){
 	if(!param) return "";
 	var queryString = "?";
 	for(var key in param){
-		queryString += key+"="+param[key]+"&";
+		queryString += key+"="+encodeURI(param[key])+"&";
 	}
 	return queryString.substr(0,queryString.length-1);
 }
