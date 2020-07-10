@@ -74,14 +74,14 @@ function fn_getUserList(){
 	if(!params.companyCode) params.companyCode = $("#companyCode").val();
 	if(!params.srchValue) params.srchValue = "";
 	gfn_fetch.post({
-		url : "/servlet/bbs/getUserList",
+		url : "/servlet/admin/account/getUserList",
 		data : params,
 		success:function(res){
-			new Pagenation("/servlet/bbs/userList",res.result.pageInfo,params)
+			new Pagenation("/servlet/admin/account/userList",res.result.pageInfo,params)
 			var html = "";
 			for(var i in res.result.datas){
 				var user = res.result.datas[i]
-				html+="<tr onclick='location.href=\"/servlet/bbs/updateUser?userId="+user.userId+"\"'>";
+				html+="<tr onclick='location.href=\"/servlet/admin/account/updateUser?userId="+user.userId+"\"'>";
 				html+="<td>"+user.userId+"</td>";
 				html+="<td>"+user.userName+"</td>";
 				html+="<td>"+user.userEmail+"</td>";
@@ -109,6 +109,6 @@ $("#companyCode").on("change",function(){
 });
 
 $("#btn-regist").on("click",function(){
-	location.href = "/servlet/bbs/registUser";
+	location.href = "/servlet/admin/account/registUser";
 });
 </script>

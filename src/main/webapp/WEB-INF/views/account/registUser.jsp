@@ -107,11 +107,11 @@ function fn_submitHandler(){
 
 		if(userPw != userPwConf)
 			return alert("비밀번호를 확인 해 주세요");
-		url = "/servlet/bbs/registUserProc"
+		url = "/servlet/admin/account/registUserProc"
 	}else{
 		if((userPw || userPwConf) && (userPw != userPwConf))
 			return alert("비밀번호를 확인 해 주세요");
-		url = "/servlet/bbs/updateUserProc"
+		url = "/servlet/admin/account/updateUserProc"
 	}
 
 	gfn_fetch.post({
@@ -124,7 +124,7 @@ function fn_submitHandler(){
 		success: function(res){
 			if(res.result){
 				alert("정상적으로 등록되었습니다.")
-				location.href="/servlet/bbs/userList";
+				location.href="/servlet/admin/account/userList";
 			}
 		}
 	})
@@ -141,7 +141,7 @@ function fn_onKeyUpHandler(){
 
 function fn_checkUserId(userId,el){
 	gfn_fetch.post({
-		url:"/servlet/bbs/checkUserId",
+		url:"/servlet/admin/account/checkUserId",
 		data : {userId : userId},
 		success : function(res){
 			if(res.result){
@@ -160,7 +160,7 @@ function fn_updateModeSet(){
 
 function fn_getUserData(){
 	gfn_fetch.post({
-		url : "/servlet/bbs/getUserInfo",
+		url : "/servlet/admin/account/getUserInfo",
 		data : params,
 		success : function(res){
 			$("#userId").val(res.result.userId);

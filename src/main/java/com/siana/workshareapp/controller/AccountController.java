@@ -1,10 +1,7 @@
 package com.siana.workshareapp.controller;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,28 +19,13 @@ import com.siana.workshareapp.service.AccountService;
  *
  */
 @Controller
-@RequestMapping("servlet/bbs")
+@RequestMapping("servlet/admin/account")
 public class AccountController extends BaseController{
 
 	protected static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
 	@Autowired
 	private AccountService accountService;
-
-	/******[ Page Actions ]**************************************************************************************/
-	/**
-	 * NAME : loginPage
-	 * DESC : 로그인 페이지 이동
-	 * DATE : 2020. 7. 3.
-	 * <pre>
-	 * @auther jyh
-	 * @return login.jsp
-	 * </pre>
-	 */
-	@RequestMapping("login")
-	public String loginPage() {
-		return "login.page";
-	}
 
 	/**
 	 * NAME : registUserPage
@@ -90,26 +72,16 @@ public class AccountController extends BaseController{
 	/******[ Data Actions ]**************************************************************************************/
 
 	/**
-	 * NAME : loginProc
-	 * DESC : 입력받은 ID , PW 를 통해 사용자 정보를 Session에 저장 후 조회 결과 리턴
-	 * DATE : 2020. 7. 3.
+	 * NAME : registUserProc
+	 * DESC : 사용자 등록
+	 * DATE : 2020. 7. 10.
 	 * <pre>
 	 * @auther jyh
 	 * @param request
 	 * @param response
-	 * @return ResultMap
+	 * @return
 	 * </pre>
 	 */
-	@RequestMapping("loginProc")
-	@ResponseBody
-	public ResultMap loginProc(HttpServletRequest request , HttpServletResponse response) {
-		Map userInfo = accountService.login(super.getParamMap(request));
-		HttpSession session = request.getSession();
-		session.setAttribute("userInfo",userInfo);
-		boolean result = (userInfo != null && !userInfo.isEmpty());
-		return new ResultMap(result);
-	}
-
 	@RequestMapping("registUserProc")
 	@ResponseBody
 	public ResultMap registUserProc(HttpServletRequest request , HttpServletResponse response) {
@@ -117,24 +89,68 @@ public class AccountController extends BaseController{
 	}
 
 
+	/**
+	 * NAME : checkUserId
+	 * DESC : 사용자 계정 중복체크
+	 * DATE : 2020. 7. 10.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * </pre>
+	 */
 	@RequestMapping("checkUserId")
 	@ResponseBody
 	public ResultMap checkUserId (HttpServletRequest request , HttpServletResponse response) {
 		return new ResultMap(accountService.duplicatedCheckUserId(super.getParamMap(request)));
 	}
 
+	/**
+	 * NAME : getUserList
+	 * DESC : 사용자 목록조회
+	 * DATE : 2020. 7. 10.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * </pre>
+	 */
 	@RequestMapping("getUserList")
 	@ResponseBody
 	public ResultMap getUserList(HttpServletRequest request , HttpServletResponse response) {
 		return new ResultMap(accountService.selectUserList(super.getParamMap(request)));
 	}
 
+	/**
+	 * NAME : getUserInfo
+	 * DESC : 사용자 정보조회
+	 * DATE : 2020. 7. 10.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * </pre>
+	 */
 	@RequestMapping("getUserInfo")
 	@ResponseBody
 	public ResultMap getUserInfo(HttpServletRequest request , HttpServletResponse response) {
 		return new ResultMap(accountService.selectUserInfo(super.getParamMap(request)));
 	}
 
+	/**
+	 * NAME : updateUserProc
+	 * DESC : 사용자 정보 수정
+	 * DATE : 2020. 7. 10.
+	 * <pre>
+	 * @auther jyh
+	 * @param request
+	 * @param response
+	 * @return
+	 * </pre>
+	 */
 	@RequestMapping("updateUserProc")
 	@ResponseBody
 	public ResultMap updateUserProc(HttpServletRequest request , HttpServletResponse response) {

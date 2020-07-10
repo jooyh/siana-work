@@ -12,7 +12,7 @@
 
 	<!-- Application Loggers -->
 	<logger name="com.siana.workshareapp">
-		<level value="info" />
+		<level value="debug" />
 	</logger>
 
 	<!-- JDBC Lggers -->
