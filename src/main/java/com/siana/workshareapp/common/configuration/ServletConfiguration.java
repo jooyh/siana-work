@@ -67,9 +67,10 @@ public class ServletConfiguration extends WebMvcConfigurerAdapter{
     public void addInterceptors(InterceptorRegistry registry) {
     	registry.addInterceptor(new Interceptor())
     	.addPathPatterns("/servlet/bbs/**")
-    	.addPathPatterns("/servlet/admin/**");
-//    	.excludePathPatterns("/bbs/login*");
+    	.addPathPatterns("/servlet/admin/**")
+    	.excludePathPatterns("/servlet/login*");
     }
+
     /* FILE DOWNLOAD */
     @Bean
 	public BeanNameViewResolver beanNameViewResolver() {

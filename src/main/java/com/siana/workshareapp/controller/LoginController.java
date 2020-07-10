@@ -18,7 +18,7 @@ import com.siana.workshareapp.common.vo.ResultMap;
 import com.siana.workshareapp.service.AccountService;
 
 @Controller
-@RequestMapping("servlet/bbs")
+@RequestMapping("servlet")
 public class LoginController extends BaseController{
 
 	protected static final Logger logger = LoggerFactory.getLogger(LoginController.class);

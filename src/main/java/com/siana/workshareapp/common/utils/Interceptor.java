@@ -25,18 +25,18 @@ public class Interceptor extends HandlerInterceptorAdapter{
 
 		HttpSession session = request.getSession();
 
-		if(!uri.contains("/servlet/bbs/login")) {
+//		if(!uri.contains("/servlet/bbs/login")) {
 			if(session.getAttribute(USER_SESSION_KEY) == null) {
-				response.sendRedirect("/servlet/bbs/login");
+				response.sendRedirect("/servlet/login");
 			}
 			if(uri.contains("/servlet/admin/")) {
 				Map userInfo = (Map) session.getAttribute(USER_SESSION_KEY);
 				if(!"A".equals(userInfo.get("status"))) {
-					response.sendRedirect("/servlet/bbs/login");
+					response.sendRedirect("/servlet/login");
 					throw new Exception("접근권한이 없습니다.");
 				}
 			}
-		}
+//		}
 
 		logger.debug("===================       START       ===================");
 		logger.debug(" Request URI \t:  " + uri);

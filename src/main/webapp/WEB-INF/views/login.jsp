@@ -39,7 +39,7 @@
 		var userPw= event.target.userPw.value;
 
 		gfn_fetch.post({
-			url : "/servlet/bbs/loginProc",
+			url : "/servlet/loginProc",
 			data : {userId : userId ,userPw : userPw},
 			success:function(data){
 				if(data.result) location.href="/servlet/bbs/workbbs"
