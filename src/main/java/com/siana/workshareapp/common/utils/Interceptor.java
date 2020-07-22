@@ -28,12 +28,13 @@ public class Interceptor extends HandlerInterceptorAdapter{
 //		if(!uri.contains("/servlet/bbs/login")) {
 			if(session.getAttribute(USER_SESSION_KEY) == null) {
 				response.sendRedirect("/servlet/login");
-			}
-			if(uri.contains("/servlet/admin/")) {
-				Map userInfo = (Map) session.getAttribute(USER_SESSION_KEY);
-				if(!"A".equals(userInfo.get("status"))) {
-					response.sendRedirect("/servlet/login");
-					throw new Exception("접근권한이 없습니다.");
+			}else {
+				if(uri.contains("/servlet/admin/")) {
+					Map userInfo = (Map) session.getAttribute(USER_SESSION_KEY);
+					if(!"A".equals(userInfo.get("status"))) {
+						response.sendRedirect("/servlet/login");
+						throw new Exception("접근권한이 없습니다.");
+					}
 				}
 			}
 //		}

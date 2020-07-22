@@ -1,5 +1,6 @@
 package com.siana.workshareapp.controller;
 
+import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,5 +61,12 @@ public class LoginController extends BaseController{
 		session.setAttribute("userInfo",userInfo);
 		boolean result = (userInfo != null && !userInfo.isEmpty());
 		return new ResultMap(result);
+	}
+
+	@RequestMapping("logout")
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
+		session.removeAttribute("userInfo");
+		response.sendRedirect("/servlet/login");
 	}
 }

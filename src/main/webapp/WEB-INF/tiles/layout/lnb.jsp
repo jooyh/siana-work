@@ -32,7 +32,7 @@
 		{url : "/servlet/bbs/workbbs" , menuNm : "업무게시판" , menuCd : "1000"},
 		<c:if test="${sessionScope.userInfo.status eq 'A'}">
 		{url : "/servlet/admin/account/userList" , menuNm : "사용자목록" , menuCd : "2000"},
-		{url : "/servlet/admin/menu/menuManage" , menuNm : "메뉴관리" , menuCd : "3000"},
+		/* {url : "/servlet/admin/menu/menuManage" , menuNm : "메뉴관리" , menuCd : "3000"}, */
 		</c:if>
 	]
 	var menuEl = "";
