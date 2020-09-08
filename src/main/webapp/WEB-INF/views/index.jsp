@@ -34,6 +34,9 @@
                 새로운 홈페이지와 함께 고객 여러분들에게 보다 나은 서비스를 제공할 수 있도록
                 노력하겠습니다.
               </p>
+              <div class="btn-box">
+                 <a href="/resources/static/doc/siana.pdf" target="_blank" class="btn-download"></a>
+              </div>
             </div>
           </div>
           <div class="content" data-idx="1">
@@ -86,7 +89,7 @@
     	fn_pageInit()
     })
       function fn_pageInit(){
-     	  setKakaoMap()
+//      	  setKakaoMap()
           bindEvent()
 	   	  setInterval(function(){
 			cnt = 0;
@@ -127,7 +130,7 @@
         $("address").click(function(){
 	   		cnt++;
 	   		if(cnt == 5){
-	   			location.href="/servlet/bbs/login";
+	   			location.href="/servlet/login";
 	   		}
 	   	})
       }

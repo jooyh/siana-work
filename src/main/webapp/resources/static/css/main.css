@@ -119,6 +119,9 @@ nav {float: left;min-height: 940px;height: 100%;}
 .left {float: left;width: 360px;padding-top: 50px;}
 .right {float: right;width: calc(100% - 360px);margin-right: -100px;}
 
+/*button*/
+.btn-download {display:inline-block;width:271px;height:58px;background:url(../images/btn-download.png) no-repeat center / 100%}
+
 /*list*/
 .info-list li:first-child {margin-top: 0;}
 .info-list li {margin-top: 30px;}
@@ -133,7 +136,6 @@ nav {float: left;min-height: 940px;height: 100%;}
 .map-area:hover .map-bg {z-index: -10;}
 
 /*active*/
-
 .content.active {z-index: 10;}
 .content .text-01 {transform: translateY(30px);opacity: 0;transition: all 1s;}
 .content.active .text-01 {transform: translateY(0px);opacity: 1;}
@@ -141,6 +143,9 @@ nav {float: left;min-height: 940px;height: 100%;}
 .content.active .text-02 {transform: translateY(0px);opacity: 1;}
 .content .text-03 {padding-top: 30px;transform: translateY(30px);opacity: 0;transition: all 1.5s 0.3s;}
 .content.active .text-03 {transform: translateY(0px);opacity: 1;}
+
+.content .btn-box {padding-top: 35px;transform: translateY(30px);opacity: 0;transition: all 1.5s 0.3s;}
+.content.active .btn-box {transform: translateY(0px);opacity: 1;}
 
 .content .info-list li {transform: translateY(30px);opacity: 0;transition: all 1s;}
 .content .info-list li:nth-child(1) {transition-delay: 0s;}
@@ -154,6 +159,7 @@ nav {float: left;min-height: 940px;height: 100%;}
 .content.active .map-tit {transform: translateY(0px);opacity: 1;}
 .content .map-area {transform: translateY(30px);opacity: 0;transition: all 1s 0.2s;}
 .content.active .map-area {transform: translateY(0px);opacity: 1;}
+
 
 
 
